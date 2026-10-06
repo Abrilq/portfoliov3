@@ -59,8 +59,7 @@ create table if not exists public.projects (
   sort_order integer not null default 0,
   published boolean not null default true,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint certifications_unique_credential unique (title, issuer, year)
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists public.certifications (
@@ -71,7 +70,8 @@ create table if not exists public.certifications (
   sort_order integer not null default 0,
   published boolean not null default true,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint certifications_unique_credential unique (title, issuer, year)
 );
 
 alter table public.profile enable row level security;

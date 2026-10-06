@@ -29,7 +29,7 @@ export default async function Home() {
             <h1>Thoughtful<br />interfaces.<br /><em>Useful</em> by design.</h1>
             <div className="hero-bottom">
               <div className="hero-intro">
-                <p className="hero-summary">I&apos;m {profile.name.split(" ")[0]}, a {profile.role} shaping clear digital experiences and the systems behind them.</p>
+                <p className="hero-summary">I&apos;m {profile.name.split(" ")[1]}, a {profile.role} shaping clear digital experiences and the systems behind them.</p>
                 {profile.availability && <p className="availability-note"><span />{profile.availability}</p>}
               </div>
               <a className="round-link" href="#work" aria-label="Explore selected work"><ArrowDownRight size={20} /></a>
@@ -96,11 +96,13 @@ export default async function Home() {
           <div className="credentials-grid"><h2>Always<br /><em>building.</em></h2><div className="credential-list">{certifications.map((certification) => <div className="credential-item" key={certification.id}><span>{certification.year}</span><p><strong>{certification.title}</strong><small>{certification.issuer}</small></p><ArrowUpRight size={16} /></div>)}</div></div>
         </section>
 
-        <footer className="site-footer" id="contact">
+      </div>
+      <footer className="site-footer" id="contact">
+        <div className="site-shell">
           <p className="eyebrow">Have a good one in mind?</p><div className="footer-main"><h2>Let&apos;s make<br /><em>it useful.</em></h2><a href={`mailto:${profile.email}`} aria-label="Email John Clarence"><Mail size={22} /><span>{profile.email}</span><ArrowUpRight size={17} /></a></div>
           <div className="footer-bottom"><Link className="wordmark" href="#top">CL<span>.</span></Link><span>{profile.location}</span>{profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}{profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")}</a>}<span>Designed & built by John Clarence / 2026</span><a href="#top"><ArrowLeft size={14} /> Back to top</a></div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </main>
   );
 }
