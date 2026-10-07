@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
+import { PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
 import { fallbackProjects } from "@/lib/content";
 import { getPortfolioContent, getPortfolioProject } from "@/lib/data";
 
@@ -27,6 +28,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const artworkIndex = Math.max(0, fallbackProjects.findIndex((item) => item.slug === project.slug));
 
   return (
+    <PortfolioStyleProvider>
     <main>
       <div className="site-shell">
         <header className="site-header">
@@ -44,5 +46,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </article>
       </div>
     </main>
+    </PortfolioStyleProvider>
   );
 }

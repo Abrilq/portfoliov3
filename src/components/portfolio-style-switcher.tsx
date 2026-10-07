@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useSyncExternalStore, type ReactNode } from "react";
 
 const portfolioStyles = [
   { id: "minimalist", label: "Minimalist", symbol: "○" },
@@ -14,6 +14,9 @@ const portfolioStyles = [
 ] as const;
 
 type PortfolioStyle = (typeof portfolioStyles)[number]["id"];
+const storageKey = "portfolio-visual-style";
+const styleChangeEvent = "portfolio-style-change";
+
 type StyleContextValue = {
   style: PortfolioStyle;
   setStyle: (style: PortfolioStyle) => void;
@@ -21,8 +24,33 @@ type StyleContextValue = {
 
 const PortfolioStyleContext = createContext<StyleContextValue | null>(null);
 
+function getStoredStyle(): PortfolioStyle {
+  if (typeof window === "undefined") return "minimalist";
+
+  const storedStyle = window.localStorage.getItem(storageKey);
+  return portfolioStyles.find(({ id }) => id === storedStyle)?.id ?? "minimalist";
+}
+
+function subscribeToStyle(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(styleChangeEvent, onChange);
+
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(styleChangeEvent, onChange);
+  };
+}
+
+function getServerStyle(): PortfolioStyle {
+  return "minimalist";
+}
+
 export function PortfolioStyleProvider({ children }: { children: ReactNode }) {
-  const [style, setStyle] = useState<PortfolioStyle>("minimalist");
+  const style = useSyncExternalStore(subscribeToStyle, getStoredStyle, getServerStyle);
+  const setStyle = (nextStyle: PortfolioStyle) => {
+    window.localStorage.setItem(storageKey, nextStyle);
+    window.dispatchEvent(new Event(styleChangeEvent));
+  };
 
   return (
     <PortfolioStyleContext.Provider value={{ style, setStyle }}>

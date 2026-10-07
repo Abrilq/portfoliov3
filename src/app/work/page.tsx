@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
+import { PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
 import { getPortfolioContent } from "@/lib/data";
 
 export const revalidate = 300;
@@ -9,6 +10,7 @@ export default async function WorkArchivePage() {
   const { projects } = await getPortfolioContent();
 
   return (
+    <PortfolioStyleProvider>
     <main>
       <div className="site-shell">
         <header className="site-header">
@@ -25,5 +27,6 @@ export default async function WorkArchivePage() {
         </section>
       </div>
     </main>
+    </PortfolioStyleProvider>
   );
 }
