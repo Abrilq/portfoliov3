@@ -15,7 +15,7 @@ export default async function WorkArchivePage() {
       <div className="site-shell">
         <header className="site-header">
           <Link className="wordmark" href="/" aria-label="John Clarence Legaspi, home">CL<span>.</span></Link>
-          <nav className="desktop-nav" aria-label="Main navigation"><Link href="/#work">Work</Link><Link href="/#about">About</Link><Link href="/#experience">Experience</Link></nav>
+          <nav className="desktop-nav" aria-label="Main navigation"><Link href="/#work">Work</Link><Link href="/#about">About</Link><Link href="/#experience">Experience</Link><Link href="/#resume">Resume</Link></nav>
           <Link className="header-contact" href="/#contact">Let&apos;s talk <ArrowUpRight size={16} /></Link>
         </header>
         <section className="archive-page">

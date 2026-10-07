@@ -24,6 +24,7 @@ export default async function Home() {
             <a href="#work">Work <span>{String(projects.length).padStart(2, "0")}</span></a>
             <a href="#about">About</a>
             <a href="#experience">Experience</a>
+            <a href="#resume">Resume</a>
           </nav>
           <a className="header-contact" href={`mailto:${profile.email}`}>Let&apos;s talk <ArrowUpRight size={16} /></a>
         </header>
@@ -129,6 +130,15 @@ export default async function Home() {
         <section className="credentials-section section-rule">
           <div className="section-label"><p className="eyebrow">Learning in practice</p><span>03 / 04</span></div>
           <div className="credentials-grid"><h2>Always<br /><em>building.</em></h2><div className="credential-list">{certifications.map((certification) => <div className="credential-item" key={certification.id}><span>{certification.year}</span><p><strong>{certification.title}</strong><small>{certification.issuer}</small></p><ArrowUpRight size={16} /></div>)}</div></div>
+        </section>
+
+        <section className="resume-section section-rule" id="resume">
+          <div className="section-label"><p className="eyebrow">Experience, skills, and education</p><span>04 / 04</span></div>
+          <div className="resume-promo">
+            <div><p className="eyebrow">Resume</p><h2>A closer look at<br /><em>my experience.</em></h2></div>
+            <p>Explore my complete background, skills, education, projects, and certifications in one place.</p>
+            <Link className="resume-button" href="/resume">View full resume <ArrowUpRight size={17} /></Link>
+          </div>
         </section>
 
       </div>
