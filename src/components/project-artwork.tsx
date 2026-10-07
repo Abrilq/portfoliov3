@@ -6,7 +6,25 @@ export function ProjectArtwork({ project, index }: { project: Project; index: nu
       <div className="artwork-window">
         <div className="artwork-window-bar"><span /><span /><span /><b>{project.category}</b></div>
         <div className="artwork-window-content">
-          {index % 5 === 0 ? (
+          {project.slug === "ordering-system" ? (
+            <>
+              <div className="artwork-label">ORDER OVERVIEW</div>
+              <strong>Orders,<br />in progress.</strong>
+              <div className="artwork-order-list"><span>ORDER #0241 <b>Preparing</b></span><span>ORDER #0242 <b>Received</b></span></div>
+            </>
+          ) : project.slug === "drinking-session" ? (
+            <>
+              <div className="artwork-label">DRINKING SESSION</div>
+              <strong>Whose turn<br />is it?</strong>
+              <div className="artwork-turn-display"><span>YOUR TURN</span><b>03</b><i>of 08</i></div>
+            </>
+          ) : project.slug === "srt-renamer" ? (
+            <>
+              <div className="artwork-label">SRT RENAMER</div>
+              <strong>Subtitles,<br />in order.</strong>
+              <div className="artwork-file-list"><span><i />episode_01.srt</span><span><i />episode_02.srt</span></div>
+            </>
+          ) : index % 5 === 0 ? (
             <>
               <div className="artwork-label">ITEM TRACKER <span>● LIVE</span></div>
               <strong>Found near<br />the library</strong>

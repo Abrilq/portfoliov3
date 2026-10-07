@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 import sanitizeHtml from "sanitize-html";
-import { fallbackContent } from "@/lib/content";
+import { fallbackContent, personalProjects, supplementalProjects } from "@/lib/content";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import type { Certification, Experience, PortfolioContent, Profile, Project } from "@/lib/types";
 
@@ -17,11 +17,16 @@ const readCachedPortfolio = unstable_cache(
     ]);
 
     const projects = (projectResult.data as Project[] | null)?.map((project) => ({ ...project, body_html: sanitizeHtml(project.body_html) }));
+    const availableProjects = projects ?? fallbackContent.projects;
+    const combinedProjects = [
+      ...availableProjects,
+      ...supplementalProjects.filter((supplemental) => !availableProjects.some((project) => project.slug === supplemental.slug)),
+    ].sort((left, right) => left.sort_order - right.sort_order);
 
     return {
       profile: (profileResult.data as Profile | null) ?? fallbackContent.profile,
       experiences: (experienceResult.data as Experience[] | null) ?? fallbackContent.experiences,
-      projects: projects ?? fallbackContent.projects,
+      projects: combinedProjects,
       certifications: (certificationResult.data as Certification[] | null) ?? fallbackContent.certifications,
     };
   },
@@ -35,5 +40,7 @@ export function getPortfolioContent() {
 
 export async function getPortfolioProject(slug: string) {
   const content = await getPortfolioContent();
-  return content.projects.find((project) => project.slug === slug) ?? null;
+  return content.projects.find((project) => project.slug === slug)
+    ?? personalProjects.find((project) => project.slug === slug)
+    ?? null;
 }

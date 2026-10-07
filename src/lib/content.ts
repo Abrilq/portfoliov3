@@ -76,6 +76,60 @@ export const fallbackProjects: Project[] = [
   },
 ];
 
+export const supplementalProjects: Project[] = [
+  {
+    id: "ordering-system",
+    slug: "ordering-system",
+    title: "Ordering System Application",
+    role: "Application project",
+    year: "",
+    category: "Ordering system",
+    summary: "A web application for organizing and processing orders.",
+    body_html: "<p>An ordering system application for organizing and processing orders through a web interface.</p>",
+    stack: ["Web application"],
+    live_url: "https://clarence-port.vercel.app/projects/ordering-system",
+    repo_url: "",
+    featured: true,
+    sort_order: 6,
+    published: true,
+  },
+];
+
+export const personalProjects: Project[] = [
+  {
+    id: "drinking-session",
+    slug: "drinking-session",
+    title: "Drinking Session",
+    role: "Personal project",
+    year: "",
+    category: "Personal project",
+    summary: "A turn-taking app that keeps track of whose turn it is during a drinking session.",
+    body_html: "<p>Designed to make group turn-taking easier to follow. Add participants, arrange their order, and tap to reveal who goes next. The interface also supports a full-screen view for use on desktop or mobile.</p>",
+    stack: ["HTML5", "CSS3", "JavaScript"],
+    live_url: "https://shotpuno.vercel.app/",
+    repo_url: "",
+    featured: false,
+    sort_order: 1,
+    published: true,
+  },
+  {
+    id: "srt-renamer",
+    slug: "srt-renamer",
+    title: "SRT Renamer",
+    role: "Personal project",
+    year: "",
+    category: "Personal project",
+    summary: "A utility for renaming SRT subtitle files.",
+    body_html: "<p>A small utility project for renaming SRT subtitle files.</p>",
+    stack: ["Subtitle utility"],
+    live_url: "https://srt-renamer.vercel.app/",
+    repo_url: "",
+    featured: false,
+    sort_order: 2,
+    published: true,
+  },
+];
+
 export const fallbackCertifications: Certification[] = [
   { id: "networking-basics", title: "Networking Basics", issuer: "Cisco", year: "2024", sort_order: 1, published: true },
   { id: "predictive-project-management", title: "Fundamentals of Predictive Project Management", issuer: "Project Management Institute", year: "2023", sort_order: 2, published: true },

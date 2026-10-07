@@ -22,7 +22,7 @@ export default async function WorkArchivePage() {
           <Link className="back-link" href="/#work"><ArrowLeft size={15} /> Back to home</Link>
           <div className="section-heading archive-heading"><div><p className="eyebrow">Selected work / 2024—25</p><h1>Project<br /><em>archive.</em></h1></div><p className="section-aside">A collection of interfaces, systems, and experiments. {projects.length} projects.</p></div>
           <div className="project-grid">
-            {projects.map((project, index) => <Link className="project-card" href={`/work/${project.slug}`} key={project.id}><ProjectArtwork project={project} index={index} /><div className="project-meta"><span>{project.category} <i>/</i> {project.year}</span><ArrowUpRight size={19} /></div><h2>{project.title}</h2><p>{project.summary}</p><div className="project-tags">{project.stack.slice(0, 3).map((item) => <span key={item}>{item}</span>)}</div></Link>)}
+            {projects.map((project, index) => <Link className="project-card" href={`/work/${project.slug}`} key={project.id}><ProjectArtwork project={project} index={index} /><div className="project-meta"><span>{project.category}{project.year && <> <i>/</i> {project.year}</>}</span><ArrowUpRight size={19} /></div><h2>{project.title}</h2><p>{project.summary}</p><div className="project-tags">{project.stack.slice(0, 3).map((item) => <span key={item}>{item}</span>)}</div></Link>)}
           </div>
         </section>
       </div>

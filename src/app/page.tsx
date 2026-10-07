@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Mail } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUp, ArrowUpRight, Mail } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
 import { PortfolioStylePicker, PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
+import { personalProjects } from "@/lib/content";
 import { getPortfolioContent } from "@/lib/data";
 import { formatExperienceDates } from "@/lib/format";
 
@@ -9,7 +10,9 @@ export const revalidate = 300;
 
 export default async function Home() {
   const { profile, experiences, projects, certifications } = await getPortfolioContent();
-  const featuredProjects = projects.filter((project) => project.featured);
+  const featuredProjects = projects
+    .filter((project) => project.featured && project.slug !== "ordering-system")
+    .slice(0, 4);
 
   return (
     <PortfolioStyleProvider>
@@ -72,14 +75,32 @@ export default async function Home() {
             {featuredProjects.map((project, index) => (
               <Link className="project-card" href={`/work/${project.slug}`} key={project.id}>
                 <ProjectArtwork project={project} index={index} />
-                <div className="project-meta"><span>{project.category} <i>/</i> {project.year}</span><ArrowUpRight size={19} /></div>
+                <div className="project-meta"><span>{project.category}{project.year && <> <i>/</i> {project.year}</>}</span><ArrowUpRight size={19} /></div>
                 <h3>{project.title}</h3>
                 <p>{project.summary}</p>
                 <div className="project-tags">{project.stack.slice(0, 3).map((item) => <span key={item}>{item}</span>)}</div>
               </Link>
             ))}
           </div>
-          <div className="project-footnote"><Link href="/work">Explore all {projects.length} projects <ArrowRight size={14} /></Link><span>01 — {String(featuredProjects.length).padStart(2, "0")}</span></div>
+          <div className="project-footnote"><Link href="/work">Explore all {projects.length} projects <ArrowRight size={14} /></Link><span>01 — {String(projects.length).padStart(2, "0")}</span></div>
+        </section>
+
+        <section className="personal-projects-section section-rule">
+          <div className="section-heading">
+            <div><p className="eyebrow">Made on my own time</p><h2>Personal<br /><em>projects.</em></h2></div>
+            <p className="section-aside">Small tools and experiments built independently.</p>
+          </div>
+          <div className="project-grid">
+            {personalProjects.map((project, index) => (
+              <Link className="project-card" href={`/work/${project.slug}`} key={project.id}>
+                <ProjectArtwork project={project} index={featuredProjects.length + index} />
+                <div className="project-meta"><span>{project.category}</span><ArrowUpRight size={19} /></div>
+                <h3>{project.title}</h3>
+                <p>{project.summary}</p>
+                <div className="project-tags">{project.stack.slice(0, 3).map((item) => <span key={item}>{item}</span>)}</div>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section className="about-section section-rule" id="about">
@@ -114,7 +135,7 @@ export default async function Home() {
       <footer className="site-footer" id="contact">
         <div className="site-shell">
           <p className="eyebrow">Have a good one in mind?</p><div className="footer-main"><h2>Let&apos;s make<br /><em>it useful.</em></h2><a href={`mailto:${profile.email}`} aria-label="Email John Clarence"><Mail size={22} /><span>{profile.email}</span><ArrowUpRight size={17} /></a></div>
-          <div className="footer-bottom"><Link className="wordmark" href="#top">CL<span>.</span></Link><span>{profile.location}</span>{profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}{profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")}</a>}<span>Designed & built by John Clarence / 2026</span><a href="#top"><ArrowLeft size={14} /> Back to top</a></div>
+          <div className="footer-bottom"><Link className="wordmark" href="#top">CL<span>.</span></Link><span>{profile.location}</span>{profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}{profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")}</a>}<span>Designed & built by John Clarence / 2026</span><a href="#top"><ArrowUp size={14} /> Back to top</a></div>
         </div>
       </footer>
     </main>
