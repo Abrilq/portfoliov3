@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Mail } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
+import { PortfolioStylePicker, PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
 import { getPortfolioContent } from "@/lib/data";
 import { formatExperienceDates } from "@/lib/format";
 
@@ -11,6 +12,7 @@ export default async function Home() {
   const featuredProjects = projects.filter((project) => project.featured);
 
   return (
+    <PortfolioStyleProvider>
     <main>
       <div className="site-shell">
         <header className="site-header">
@@ -48,6 +50,8 @@ export default async function Home() {
           </aside>
           <div className="hero-index">01 <i /> 04</div>
         </section>
+
+        <PortfolioStylePicker />
 
         <aside className="parallax-promo">
           <div>
@@ -114,5 +118,6 @@ export default async function Home() {
         </div>
       </footer>
     </main>
+    </PortfolioStyleProvider>
   );
 }
