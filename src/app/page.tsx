@@ -49,6 +49,16 @@ export default async function Home() {
           <div className="hero-index">01 <i /> 04</div>
         </section>
 
+        <aside className="parallax-promo">
+          <div>
+            <p className="eyebrow">A different perspective</p>
+            <a href="https://clarence-port.vercel.app/" target="_blank" rel="noreferrer">
+              You can visit my parallax portfolio too! <ArrowUpRight size={18} />
+            </a>
+          </div>
+          <p>It may take a little longer to load—thanks for your patience.</p>
+        </aside>
+
         <section className="work-section section-rule" id="work">
           <div className="section-heading">
             <div><p className="eyebrow">Selected work / 2024—25</p><h2>Made to make<br /><em>things clearer.</em></h2></div>
