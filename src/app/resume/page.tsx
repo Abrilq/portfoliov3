@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { ResumePrintButton } from "@/components/resume-print-button";
+import { ResumeDownloadButton } from "@/components/resume-download-button";
 import { PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
 import { personalProjects } from "@/lib/content";
 import { getPortfolioContent } from "@/lib/data";
@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 
 export default async function ResumePage() {
   const { profile, experiences, projects, certifications } = await getPortfolioContent();
-  const allProjects = [...projects, ...personalProjects];
 
   return (
     <PortfolioStyleProvider>
@@ -44,7 +43,6 @@ export default async function ResumePage() {
                 <a href={`mailto:${profile.email}`}>{profile.email}</a>
                 {profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}
                 <span>{profile.location}</span>
-                {profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")} <ArrowUpRight size={13} /></a>}
               </div>
             </div>
 
@@ -69,13 +67,43 @@ export default async function ResumePage() {
             </section>
 
             <section className="resume-block">
-              <h2>Projects</h2>
+              <h2>Academic Projects</h2>
               <div className="resume-entry-list resume-project-list">
-                {allProjects.map((project) => (
+                {projects.map((project) => (
                   <article className="resume-entry" key={project.id}>
                     <div className="resume-entry-heading">
-                      <div><h3>{project.title}</h3><p>{project.category}{project.year && ` / ${project.year}`} / {project.role}</p></div>
-                      {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
+                      <div>
+                        <h3>{project.slug === "lost-and-found" ? "Lost and Found WebApp" : project.title}</h3>
+                        <p className="resume-project-meta">{project.category}{project.year && ` / ${project.year}`}</p>
+                        <p className="resume-project-role">{project.role}</p>
+                      </div>
+                      <div className="resume-project-links">
+                        {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
+                        {project.slug === "lost-and-found" && <a href="https://lnfdemoapp.vercel.app/" target="_blank" rel="noreferrer">Try the web app <ArrowUpRight size={13} /></a>}
+                        {project.slug === "eyewear-store" && <a href="https://illustrious-donut-bb8d96.netlify.app/" target="_blank" rel="noreferrer">View live site <ArrowUpRight size={13} /></a>}
+                      </div>
+                    </div>
+                    <p>{project.summary}</p>
+                    <p className="resume-project-stack">{project.stack.join(" · ")}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="resume-block">
+              <h2>Personal Projects</h2>
+              <div className="resume-entry-list resume-project-list">
+                {personalProjects.map((project) => (
+                  <article className="resume-entry" key={project.id}>
+                    <div className="resume-entry-heading">
+                      <div>
+                        <h3>{project.title}</h3>
+                        <p className="resume-project-meta">{project.category}{project.year && ` / ${project.year}`}</p>
+                        <p className="resume-project-role">{project.role}</p>
+                      </div>
+                      <div className="resume-project-links">
+                        {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
+                      </div>
                     </div>
                     <p>{project.summary}</p>
                     <p className="resume-project-stack">{project.stack.join(" · ")}</p>
@@ -109,7 +137,7 @@ export default async function ResumePage() {
             </section>
 
             <div className="resume-download-actions">
-              <ResumePrintButton />
+              <ResumeDownloadButton />
             </div>
           </article>
         </div>

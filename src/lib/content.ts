@@ -81,7 +81,7 @@ export const supplementalProjects: Project[] = [
     id: "ordering-system",
     slug: "ordering-system",
     title: "Ordering System Application",
-    role: "Application project",
+    role: "UI/UX Designer",
     year: "",
     category: "Ordering system",
     summary: "A web application for organizing and processing orders.",

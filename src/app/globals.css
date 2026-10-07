@@ -194,15 +194,19 @@ button, input, textarea, select { font: inherit; }
 .resume-page-top h1 { margin: 12px 0 4px; font-family: Arial, Helvetica, sans-serif; font-size: clamp(38px, 5vw, 58px); font-weight: 500; line-height: 1; letter-spacing: -.055em; }
 .resume-role { margin: 0; color: var(--green); font-size: 16px; font-weight: 600; }
 .resume-contact { display: grid; justify-items: end; gap: 4px; color: var(--muted); font-size: 10px; text-align: right; }
-.resume-contact a, .resume-entry-heading > a { display: inline-flex; align-items: center; gap: 4px; color: var(--green); }
+.resume-contact a, .resume-entry-heading > a, .resume-project-links a { display: inline-flex; align-items: center; gap: 4px; color: var(--green); }
 .resume-block { display: grid; grid-template-columns: 170px 1fr; gap: 32px; padding: 25px 0; border-bottom: 1px solid var(--line); }
 .resume-block > h2, .resume-education-skills h2 { margin: 0; color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .resume-block > p { max-width: 760px; margin: 0; color: var(--muted); font-size: 13px; }
 .resume-entry-list { display: grid; gap: 20px; }
-.resume-entry h3 { margin: 0; font-size: 14px; font-weight: 700; }
+.resume-entry h3, .resume-entry h4 { margin: 0; font-size: 14px; font-weight: 700; }
 .resume-entry p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
 .resume-entry-heading { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
 .resume-entry-heading > span, .resume-entry-heading > a { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+.resume-project-meta { color: var(--muted); }
+.resume-entry .resume-project-role { width: fit-content; margin-top: 7px; padding: 4px 8px; border: 1px solid var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green); font-size: 10px; font-weight: 700; }
+.resume-project-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; }
+.resume-project-links a { flex: 0 0 auto; font-size: 10px; }
 .resume-entry ul { margin: 8px 0 0; padding-left: 17px; color: var(--muted); font-size: 11px; }
 .resume-entry li { margin-top: 3px; padding-left: 2px; }
 .resume-entry li::marker { color: var(--green); }
@@ -770,7 +774,7 @@ button, input, textarea, select { font: inherit; }
 	--mint: #ffffff80;
 	--coral: #8b76b7;
 	--yellow: #d8d1ec;
-	--white: #ffffff66;
+	--white: #fff;
 	--project-canvas: #ffffff24;
 	--project-frame: #ffffff70;
 	--project-line: #ffffffa6;
@@ -810,6 +814,8 @@ button, input, textarea, select { font: inherit; }
 .portfolio-theme[data-style="glassmorphism"] .artwork-5 { background-color: var(--project-canvas); }
 .portfolio-theme[data-style="glassmorphism"] .artwork-window { background-color: var(--project-frame); }
 .portfolio-theme[data-style="glassmorphism"] .style-option[aria-pressed="true"] { background: var(--green); color: white; }
+.portfolio-theme[data-style="glassmorphism"] .project-detail .detail-links > .detail-primary { color: #fff; }
+.portfolio-theme[data-style="glassmorphism"] .project-detail .detail-links > .detail-primary:hover { color: var(--green) !important; }
 
 @media (max-width: 520px) {
 	.style-picker { padding: 17px 0; }

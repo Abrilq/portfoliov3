@@ -8,7 +8,7 @@ const portfolioStyles = [
   { id: "neubrutalist", label: "Neubrutalist", symbol: "✳" },
   { id: "bauhaus", label: "Bauhaus", symbol: "◒" },
   { id: "neumorphism", label: "Neumorphism", symbol: "◍" },
-  { id: "retro-futurism", label: "Retro futurism", symbol: "✦" },
+  { id: "retro-futurism", label: "Retro Futurism", symbol: "✦" },
   { id: "cyberpunk", label: "Cyberpunk", symbol: "⌁" },
   { id: "glassmorphism", label: "Glassmorphism", symbol: "◌" },
 ] as const;
