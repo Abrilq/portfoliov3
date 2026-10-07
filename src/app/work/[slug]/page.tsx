@@ -9,7 +9,7 @@ import { getPortfolioContent, getPortfolioProject } from "@/lib/data";
 export const revalidate = 300;
 
 const demoLinks: Record<string, string> = {
-  "lost-and-found": "https://clarence-legaspi-8t5qavy20-abrilqs-projects.vercel.app/projects/demo_spa/lost-and-found",
+  "lost-and-found": "https://lnfdemoapp.vercel.app/",
   "eyewear-store": "https://illustrious-donut-bb8d96.netlify.app/",
   "drinking-session": "https://shotpuno.vercel.app/",
   "srt-renamer": "https://srt-renamer.vercel.app/",
