@@ -201,7 +201,7 @@ button, input, textarea, select { font: inherit; }
 .detail-heading h1 { margin: 15px 0 0; font-family: Arial, Helvetica, sans-serif; font-size: clamp(42px, 6vw, 68px); font-weight: 500; line-height: 1.02; letter-spacing: -.05em; }
 .detail-heading p { color: var(--muted); font-size: 14px; }
 .detail-art { margin-bottom: 54px; }
-.detail-body { max-width: 700px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.75; }
+.detail-body { max-width: 700px; display: flex; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.75; }
 .detail-body h2 { margin: 38px 0 7px; font-size: 21px; font-weight: 500; letter-spacing: -.02em; }
 .detail-body p { color: var(--muted); }
 .detail-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
@@ -257,6 +257,7 @@ button, input, textarea, select { font: inherit; }
 	.footer-main > a { min-width: 210px; }
 	.footer-bottom { flex-wrap: wrap; }
 	.detail-heading { grid-template-columns: 1fr; gap: 10px; margin-top: 45px; }
+	.detail-body { margin-right: 0; margin-left: 0; }
 }
 
 @media (max-width: 520px) {
