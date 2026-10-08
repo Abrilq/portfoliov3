@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, Award, BriefcaseBusiness, FolderKanban, UserRound } from "lucide-react";
+import { ArrowUpRight, Award, BriefcaseBusiness, FileText, FolderKanban } from "lucide-react";
 import { getAdminPortfolio } from "@/lib/admin-data";
 
 export default async function AdminDashboard() {
   const content = await getAdminPortfolio();
   const items = [
-    { href: "/admin/profile", label: "Profile", count: "01", detail: "Headline, summary, and contact details", icon: UserRound },
+    { href: "/admin/resume-details", label: "Resume details", count: "01", detail: "Personal details, headline, and education", icon: FileText },
     { href: "/admin/experience", label: "Experience", count: String(content.experiences.length).padStart(2, "0"), detail: "Roles, highlights, and visibility", icon: BriefcaseBusiness },
     { href: "/admin/projects", label: "Projects", count: String(content.projects.length).padStart(2, "0"), detail: "Case studies and rich-text project pages", icon: FolderKanban },
     { href: "/admin/certifications", label: "Certifications", count: String(content.certifications.length).padStart(2, "0"), detail: "Credentials shown on the portfolio", icon: Award },

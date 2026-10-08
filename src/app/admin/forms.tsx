@@ -161,7 +161,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           render={({ field }) => <ToolsPicker value={field.value} onChange={field.onChange} />}
         />
       </fieldset>
-      <Field label="Professional summary" error={errors.summary?.message}><textarea rows={5} {...register("summary")} /></Field>
+      <Field label="Hero and resume summary" error={errors.summary?.message}><textarea rows={5} {...register("summary")} /></Field>
       <div className="admin-form-actions"><FormFeedback result={result} /><SaveButton busy={isSubmitting} /></div>
     </form>
   );

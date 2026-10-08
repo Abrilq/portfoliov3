@@ -36,7 +36,7 @@ export default async function Home() {
             <h1>Thoughtful<br />interfaces.<br /><em>Useful</em> by design.</h1>
             <div className="hero-bottom">
               <div className="hero-intro">
-                <p className="hero-summary">I&apos;m {profile.name.split(" ")[1]}, a {profile.role} shaping clear digital experiences and the systems behind them.</p>
+                <p className="hero-summary">{profile.summary}</p>
                 {profile.availability && <p className="availability-note"><span />{profile.availability}</p>}
               </div>
               <a className="round-link" href="#work" aria-label="Explore selected work"><ArrowDownRight size={20} /></a>
@@ -109,7 +109,7 @@ export default async function Home() {
           <div className="section-label"><p className="eyebrow">A little about me</p><span>02 / 04</span></div>
           <div className="about-grid">
             <h2>Technology should feel <em>human.</em></h2>
-            <div className="about-copy"><p>{profile.summary}</p><p>I bring a mix of frontend craft, systems thinking, and a steady curiosity about how people use the things we build.</p><a href={`mailto:${profile.email}`}>Start a conversation <ArrowRight size={16} /></a></div>
+            <div className="about-copy"><p>I bring a mix of frontend craft, systems thinking, and a steady curiosity about how people use the things we build.</p><a href={`mailto:${profile.email}`}>Start a conversation <ArrowRight size={16} /></a></div>
           </div>
           <div className="skills-band">
             <span>TOOLS & TECHNOLOGIES</span>

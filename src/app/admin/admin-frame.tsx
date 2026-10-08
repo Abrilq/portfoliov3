@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Award, BriefcaseBusiness, FolderKanban, LayoutDashboard, LogOut, UserRound } from "lucide-react";
+import { Award, BriefcaseBusiness, FileText, FolderKanban, LayoutDashboard, LogOut } from "lucide-react";
 import { signOutAdmin } from "./actions";
 
 const adminLinks = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin/profile", label: "Profile", icon: UserRound },
+  { href: "/admin/resume-details", label: "Resume details", icon: FileText },
   { href: "/admin/experience", label: "Experience", icon: BriefcaseBusiness },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/certifications", label: "Certifications", icon: Award },
@@ -23,7 +23,7 @@ export function AdminFrame({ children }: Readonly<{ children: React.ReactNode }>
         <Link className="admin-brand" href="/admin"><span>CL</span> CONTENT STUDIO</Link>
         <p className="admin-nav-label">WORKSPACE</p>
         <nav className="admin-nav" aria-label="Admin navigation">
-          {adminLinks.map(({ href, label, icon: Icon }) => <Link href={href} key={href}><Icon size={17} /><span>{label}</span></Link>)}
+          {adminLinks.map(({ href, label, icon: Icon }) => <Link aria-current={pathname === href ? "page" : undefined} href={href} key={href}><Icon size={17} /><span>{label}</span></Link>)}
         </nav>
         <div className="admin-sidebar-bottom"><span>PORTFOLIO OWNER</span><form action={signOutAdmin}><button type="submit"><LogOut size={15} /> Sign out</button></form></div>
       </aside>
