@@ -151,7 +151,7 @@ export default async function Home() {
 
         <section className="credentials-section section-rule">
           <div className="section-label"><p className="eyebrow">Learning in practice</p><span>03 / 04</span></div>
-          <div className="credentials-grid"><h2>Always<br /><em>building.</em></h2><div className="credential-list">{certifications.map((certification) => <div className="credential-item" key={certification.id}><span>{certification.year}</span><p><strong>{certification.title}</strong><small>{certification.issuer}</small></p><ArrowUpRight size={16} /></div>)}</div></div>
+          <div className="credentials-grid"><h2>Always<br /><em>learning.</em></h2><div className="credential-list">{certifications.map((certification) => <div className="credential-item" key={certification.id}><span>{certification.year}</span><p><strong>{certification.title}</strong><small>{certification.issuer}</small></p><ArrowUpRight size={16} /></div>)}</div></div>
         </section>
 
         <section className="resume-section section-rule" id="resume">

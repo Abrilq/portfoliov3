@@ -271,6 +271,7 @@ button, input, textarea, select { font: inherit; }
 	.header-contact { padding: 8px 10px; font-size: 10px; }
 	.hero { min-height: 0; padding: 65px 0 78px; grid-template-columns: minmax(0, 1fr); gap: 58px; }
 	.hero h1 { font-size: clamp(58px, 12vw, 78px); }
+	.portfolio-theme[data-style="brutalist"] .hero h1 { font-size: clamp(2rem, 10vw, 4.875rem); }
 	.hero-aside { min-height: 340px; }
 	.hero-stamp { left: 2%; width: 112px; height: 112px; padding: 15px; }
 	.workflow-preview { width: min(83%, 405px); margin-left: 8%; }
@@ -315,6 +316,7 @@ button, input, textarea, select { font: inherit; }
 	.desktop-nav { display: none; }
 	.hero { padding-top: 53px; gap: 45px; }
 	.hero h1 { font-size: clamp(53px, 15vw, 70px); }
+	.portfolio-theme[data-style="brutalist"] .hero h1 { font-size: clamp(1.8rem, 10vw, 3.25rem); }
 	.hero-bottom { gap: 15px; }
 	.hero-summary { font-size: 15px; }
 	.hero-intro { max-width: none; min-width: 0; }
