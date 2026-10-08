@@ -5,6 +5,7 @@ import { PortfolioStylePicker, PortfolioStyleProvider } from "@/components/portf
 import { personalProjects } from "@/lib/content";
 import { getPortfolioContent } from "@/lib/data";
 import { formatExperienceDates } from "@/lib/format";
+import { ToolLogo } from "@/lib/tool-icons";
 
 export const revalidate = 300;
 
@@ -110,7 +111,28 @@ export default async function Home() {
             <h2>Technology should feel <em>human.</em></h2>
             <div className="about-copy"><p>{profile.summary}</p><p>I bring a mix of frontend craft, systems thinking, and a steady curiosity about how people use the things we build.</p><a href={`mailto:${profile.email}`}>Start a conversation <ArrowRight size={16} /></a></div>
           </div>
-          <div className="skills-band"><span>TOOLS & TECHNOLOGIES</span><p>{profile.skills.map((skill, index) => <span key={skill}>{index > 0 && <i> · </i>}{skill}</span>)}</p></div>
+          <div className="skills-band">
+            <span>TOOLS & TECHNOLOGIES</span>
+            <div className="skills-marquee" aria-label="Tools and technologies">
+              <div className="skills-marquee-track">
+                {[false, true].map((isDuplicate) => (
+                  <ul
+                    className="skills-marquee-list"
+                    aria-hidden={isDuplicate || undefined}
+                    aria-label={isDuplicate ? undefined : "Tools and technologies"}
+                    key={String(isDuplicate)}
+                  >
+                    {profile.skills.map((skill) => (
+                      <li className="skills-marquee-item" key={skill}>
+                        <ToolLogo name={skill} />
+                        <span>{skill}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="experience-section section-rule" id="experience">

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { RichTextEditor } from "@/components/rich-text-editor";
+import { ToolLogo, toolCatalog } from "@/lib/tool-icons";
 import type { Certification, Experience, Profile, Project } from "@/lib/types";
 import {
   certificationSchema,
@@ -41,10 +42,69 @@ function SaveButton({ label = "Save changes", busy }: { label?: string; busy?: b
   return <button className="admin-save" type="submit" disabled={busy}><Save size={15} /> {busy ? "Saving…" : label}</button>;
 }
 
+function ToolsPicker({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const [query, setQuery] = useState("");
+  const selectedTools = value.split(",").map((item) => item.trim()).filter(Boolean);
+  const normalizedSelected = new Set(selectedTools.map((item) => item.toLowerCase()));
+  const matches = toolCatalog.filter((tool) => tool.name.toLowerCase().includes(query.trim().toLowerCase()));
+  const matchingTools = matches.slice(0, 24);
+
+  function toggleTool(name: string) {
+    const nextTools = normalizedSelected.has(name.toLowerCase())
+      ? selectedTools.filter((item) => item.toLowerCase() !== name.toLowerCase())
+      : [...selectedTools, name];
+    onChange(nextTools.join(", "));
+  }
+
+  return (
+    <div className="tool-picker">
+      <input
+        aria-label="Search tools and technologies"
+        className="tool-picker-search"
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Search tools and technologies"
+        type="search"
+        value={query}
+      />
+      {selectedTools.length > 0 && (
+        <div className="tool-picker-selected" aria-label="Selected tools">
+          {selectedTools.map((tool) => (
+            <span className="tool-picker-chip" key={tool}>
+              <ToolLogo name={tool} />
+              {tool}
+              <button aria-label={`Remove ${tool}`} onClick={() => toggleTool(tool)} type="button">×</button>
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="tool-picker-results" role="group" aria-label="Tool options">
+        {matchingTools.map((tool) => (
+          <label className="tool-picker-option" key={tool.name}>
+            <input
+              checked={normalizedSelected.has(tool.name.toLowerCase())}
+              onChange={() => toggleTool(tool.name)}
+              type="checkbox"
+            />
+            <ToolLogo name={tool.name} />
+            <span>{tool.name}</span>
+          </label>
+        ))}
+        {matchingTools.length === 0 && <p className="tool-picker-empty">No matching tools found.</p>}
+      </div>
+      <span className="tool-picker-hint" role="status">
+        {matches.length > matchingTools.length
+          ? `Showing the first ${matchingTools.length} of ${matches.length} matches. Search to narrow the list.`
+          : `${matches.length} matching ${matches.length === 1 ? "tool" : "tools"}.`}
+        {` ${selectedTools.length} selected.`}
+      </span>
+    </div>
+  );
+}
+
 export function ProfileForm({ profile }: { profile: Profile }) {
   const router = useRouter();
   const [result, setResult] = useState<ActionResult>({});
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProfileValues>({
+  const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm<ProfileValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: profile.name,
@@ -73,7 +133,16 @@ export function ProfileForm({ profile }: { profile: Profile }) {
     <form className="admin-form" onSubmit={submit}>
       <div className="admin-form-grid">
         <Field label="Name" error={errors.name?.message}><input {...register("name")} /></Field>
-        <Field label="Professional headline" error={errors.role?.message}><input {...register("role")} /></Field>
+        <Field label="Professional headline" error={errors.role?.message}>
+          <input list="professional-headline-options" {...register("role")} />
+          <datalist id="professional-headline-options">
+            <option value="Frontend Developer" />
+            <option value="Full-stack Developer" />
+            <option value="Web Developer" />
+            <option value="Software Developer" />
+            <option value="IT Graduate" />
+          </datalist>
+        </Field>
         <Field label="Location" error={errors.location?.message}><input {...register("location")} /></Field>
         <Field label="Email" error={errors.email?.message}><input type="email" {...register("email")} /></Field>
         <Field label="Phone" error={errors.phone?.message}><input {...register("phone")} /></Field>
@@ -83,8 +152,15 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         <Field label="Degree"><input {...register("education_degree")} /></Field>
         <Field label="Education start year"><input {...register("education_start")} /></Field>
         <Field label="Education end year"><input {...register("education_end")} /></Field>
-        <Field label="Skills and tools (comma-separated)"><input {...register("skills_text")} /></Field>
       </div>
+      <fieldset className="admin-field tool-picker-field">
+        <legend>Skills and tools</legend>
+        <Controller
+          control={control}
+          name="skills_text"
+          render={({ field }) => <ToolsPicker value={field.value} onChange={field.onChange} />}
+        />
+      </fieldset>
       <Field label="Professional summary" error={errors.summary?.message}><textarea rows={5} {...register("summary")} /></Field>
       <div className="admin-form-actions"><FormFeedback result={result} /><SaveButton busy={isSubmitting} /></div>
     </form>
