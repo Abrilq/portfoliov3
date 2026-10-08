@@ -13,6 +13,7 @@ export default async function Home() {
   const featuredProjects = projects
     .filter((project) => project.featured && project.slug !== "ordering-system")
     .slice(0, 4);
+  const featuredPersonalProjects = personalProjects.slice(0, 2);
 
   return (
     <PortfolioStyleProvider>
@@ -92,7 +93,7 @@ export default async function Home() {
             <p className="section-aside">Small tools and experiments built independently.</p>
           </div>
           <div className="project-grid">
-            {personalProjects.map((project, index) => (
+            {featuredPersonalProjects.map((project, index) => (
               <Link className="project-card" href={`/work/${project.slug}`} key={project.id}>
                 <ProjectArtwork project={project} index={featuredProjects.length + index} />
                 <div className="project-meta"><span>{project.category}</span><ArrowUpRight size={19} /></div>
@@ -101,6 +102,9 @@ export default async function Home() {
                 <div className="project-tags">{project.stack.slice(0, 3).map((item) => <span key={item}>{item}</span>)}</div>
               </Link>
             ))}
+          </div>
+          <div className="project-footnote personal-project-footnote">
+            <span>Currently {personalProjects.length} personal project{personalProjects.length === 1 ? "" : "s"}.</span>
           </div>
         </section>
 
@@ -166,7 +170,16 @@ export default async function Home() {
       <footer className="site-footer" id="contact">
         <div className="site-shell">
           <p className="eyebrow">Have a good one in mind?</p><div className="footer-main"><h2>Let&apos;s make<br /><em>it useful.</em></h2><a href={`mailto:${profile.email}`} aria-label="Email John Clarence"><Mail size={22} /><span>{profile.email}</span><ArrowUpRight size={17} /></a></div>
-          <div className="footer-bottom"><Link className="wordmark" href="#top">CL<span>.</span></Link><span>{profile.location}</span>{profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}{profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")}</a>}<span>Designed & built by John Clarence / 2026</span><a href="#top"><ArrowUp size={14} /> Back to top</a></div>
+          <div className="footer-bottom">
+            <Link className="wordmark" href="#top">CL<span>.</span></Link>
+            <div className="footer-details">
+              <span>{profile.location}</span>
+              {profile.phone && <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a>}
+              {profile.website && <a href={profile.website} target="_blank" rel="noreferrer">{profile.website.replace(/^https?:\/\//, "")}</a>}
+              <span className="footer-credit">Designed & built by John Clarence / 2026</span>
+            </div>
+            <a className="footer-back-to-top" href="#top"><ArrowUp size={14} /> Back to top</a>
+          </div>
         </div>
       </footer>
     </main>
