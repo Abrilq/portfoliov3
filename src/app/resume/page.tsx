@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ResumeDownloadButton } from "@/components/resume-download-button";
 import { PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
-import { personalProjects } from "@/lib/content";
 import { getPortfolioContent } from "@/lib/data";
 import { formatExperienceDates } from "@/lib/format";
 
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ResumePage() {
-  const { profile, experiences, projects, certifications } = await getPortfolioContent();
+  const { profile, experiences, projects, personalProjects, certifications } = await getPortfolioContent();
 
   return (
     <PortfolioStyleProvider>

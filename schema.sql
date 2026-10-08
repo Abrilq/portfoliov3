@@ -58,6 +58,8 @@ create table if not exists public.projects (
   featured boolean not null default false,
   sort_order integer not null default 0,
   published boolean not null default true,
+  project_type text not null default 'case_study' check (project_type in ('case_study', 'personal')),
+  media jsonb not null default '[]'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -73,6 +75,18 @@ create table if not exists public.certifications (
   updated_at timestamptz not null default now(),
   constraint certifications_unique_credential unique (title, issuer, year)
 );
+
+alter table public.projects add column if not exists project_type text not null default 'case_study';
+alter table public.projects add column if not exists media jsonb not null default '[]'::jsonb;
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'projects_project_type_check') then
+    alter table public.projects
+      add constraint projects_project_type_check check (project_type in ('case_study', 'personal'));
+  end if;
+end
+$$;
 
 alter table public.profile enable row level security;
 alter table public.experiences enable row level security;
@@ -102,6 +116,33 @@ create policy "Admins can manage certifications" on public.certifications for al
 revoke all on table public.profile, public.experiences, public.projects, public.certifications from anon, authenticated;
 grant select on public.profile, public.experiences, public.projects, public.certifications to anon, authenticated;
 grant insert, update, delete on public.profile, public.experiences, public.projects, public.certifications to authenticated;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'project-media',
+  'project-media',
+  true,
+  104857600,
+  array['image/avif', 'image/gif', 'image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/quicktime', 'video/webm']
+)
+on conflict (id) do update
+set public = excluded.public,
+    file_size_limit = excluded.file_size_limit,
+    allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists "Public can read project media" on storage.objects;
+create policy "Public can read project media" on storage.objects
+for select using (bucket_id = 'project-media');
+drop policy if exists "Admins can upload project media" on storage.objects;
+create policy "Admins can upload project media" on storage.objects
+for insert to authenticated with check (bucket_id = 'project-media' and public.is_site_admin());
+drop policy if exists "Admins can update project media" on storage.objects;
+create policy "Admins can update project media" on storage.objects
+for update to authenticated using (bucket_id = 'project-media' and public.is_site_admin())
+with check (bucket_id = 'project-media' and public.is_site_admin());
+drop policy if exists "Admins can delete project media" on storage.objects;
+create policy "Admins can delete project media" on storage.objects
+for delete to authenticated using (bucket_id = 'project-media' and public.is_site_admin());
 
 insert into public.profile (id, name, role, location, email, phone, website, summary, availability, education_school, education_degree, education_start, education_end, skills)
 values (
@@ -135,6 +176,13 @@ values
   ('eyewear-store', 'E-commerce Website', 'Project Leader, Frontend Developer', '2024', 'Commerce', 'An eyewear storefront with responsive product displays and product variant selection.', '<p>Led frontend development for an eyewear e-commerce website, building a responsive storefront that makes product options simple to compare.</p><h2>What I built</h2><p>Responsive product displays and variant selection features designed to stay clear across screen sizes.</p>', array['E-commerce', 'Responsive UI', 'Product variants'], true, 3),
   ('ar-learning', 'Augmented Reality Learning', '3D Designer, Full-Stack Developer', '2024', 'Interactive learning', 'An AR mobile experience using ARCore and C# to make learning interactive.', '<p>Developed an augmented reality mobile application with ARCore and C#. The project combines 3D assets with interactive features to support an engaging learning experience.</p>', array['ARCore', 'C#', '3D design'], true, 4),
   ('damath', 'DaMath Educational Game', '3D Designer', '2024', 'Game design', 'Interactive 3D chessboard and game assets modeled in Blender.', '<p>Modeled the interactive 3D chessboard and game assets for an educational DaMath game, translating familiar board-game elements into a digital learning environment.</p>', array['Blender', '3D modeling', 'Education'], false, 5)
+on conflict (slug) do nothing;
+
+insert into public.projects (slug, title, role, year, category, summary, body_html, stack, live_url, featured, sort_order, project_type)
+values
+  ('ordering-system', 'Ordering System Application', 'UI/UX Designer', '', 'Ordering system', 'A web application for organizing and processing orders.', '<p>An ordering system application for organizing and processing orders through a web interface.</p>', array['Web application'], 'https://clarence-port.vercel.app/projects/ordering-system', false, 6, 'case_study'),
+  ('drinking-session', 'Drinking Session', 'Personal project', '', 'Personal project', 'A turn-taking app that keeps track of whose turn it is during a drinking session.', '<p>Designed to make group turn-taking easier to follow. Add participants, arrange their order, and tap to reveal who goes next. The interface also supports a full-screen view for use on desktop or mobile.</p>', array['HTML5', 'CSS3', 'JavaScript'], 'https://shotpuno.vercel.app/', false, 1, 'personal'),
+  ('srt-renamer', 'SRT Renamer', 'Personal project', '', 'Personal project', 'A utility for renaming SRT subtitle files.', '<p>A small utility project for renaming SRT subtitle files.</p>', array['Subtitle utility'], 'https://srt-renamer.vercel.app/', false, 2, 'personal')
 on conflict (slug) do nothing;
 
 insert into public.certifications (title, issuer, year, sort_order)

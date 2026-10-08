@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowDownRight, ArrowRight, ArrowUp, ArrowUpRight, Mail } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
 import { PortfolioStylePicker, PortfolioStyleProvider } from "@/components/portfolio-style-switcher";
-import { personalProjects } from "@/lib/content";
 import { getPortfolioContent } from "@/lib/data";
 import { formatExperienceDates } from "@/lib/format";
 import { ToolLogo } from "@/lib/tool-icons";
@@ -10,7 +9,7 @@ import { ToolLogo } from "@/lib/tool-icons";
 export const revalidate = 300;
 
 export default async function Home() {
-  const { profile, experiences, projects, certifications } = await getPortfolioContent();
+  const { profile, experiences, projects, personalProjects, certifications } = await getPortfolioContent();
   const featuredProjects = projects
     .filter((project) => project.featured && project.slug !== "ordering-system")
     .slice(0, 4);

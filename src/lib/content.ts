@@ -48,31 +48,31 @@ export const fallbackProjects: Project[] = [
     id: "lost-and-found", slug: "lost-and-found", title: "Lost & Found WebApp", role: "Team Leader, Full-Stack Developer", year: "2025", category: "Service platform",
     summary: "A service-based web app for tracking found items through clear, role-based workflows.",
     body_html: "<p>Led a three-member team to plan and build a service-based web application. The experience organizes item tracking around clear roles and a predictable handoff from report to resolution.</p><h2>My contribution</h2><p>I shaped the system architecture, coordinated implementation, and built role-aware workflows that make each item easier to follow.</p>",
-    stack: ["Full-stack development", "Role-based workflows", "Team leadership"], live_url: "", repo_url: "", featured: true, sort_order: 1, published: true,
+    stack: ["Full-stack development", "Role-based workflows", "Team leadership"], live_url: "", repo_url: "", featured: true, sort_order: 1, published: true, project_type: "case_study", media: [],
   },
   {
     id: "pre-advising", slug: "pre-advising", title: "Pre-advising System", role: "UI/UX Designer, Frontend Developer", year: "2025", category: "Education",
     summary: "A focused subject-planning interface organized around course, year level, and semester.",
     body_html: "<p>Designed a web interface that helps students view and manage subjects by course, year, and semester. The information structure keeps academic planning easy to scan.</p><h2>Design focus</h2><p>Clear navigation, readable subject groupings, and a direct path from overview to individual semester details.</p>",
-    stack: ["UI/UX design", "Frontend development", "Education"], live_url: "", repo_url: "", featured: true, sort_order: 2, published: true,
+    stack: ["UI/UX design", "Frontend development", "Education"], live_url: "", repo_url: "", featured: true, sort_order: 2, published: true, project_type: "case_study", media: [],
   },
   {
     id: "eyewear-store", slug: "eyewear-store", title: "E-commerce Website", role: "Project Leader, Frontend Developer", year: "2024", category: "Commerce",
     summary: "An eyewear storefront with responsive product displays and product variant selection.",
     body_html: "<p>Led frontend development for an eyewear e-commerce website, building a responsive storefront that makes product options simple to compare.</p><h2>What I built</h2><p>Responsive product displays and variant selection features designed to stay clear across screen sizes.</p>",
-    stack: ["E-commerce", "Responsive UI", "Product variants"], live_url: "", repo_url: "", featured: true, sort_order: 3, published: true,
+    stack: ["E-commerce", "Responsive UI", "Product variants"], live_url: "", repo_url: "", featured: true, sort_order: 3, published: true, project_type: "case_study", media: [],
   },
   {
     id: "ar-learning", slug: "ar-learning", title: "Augmented Reality Learning", role: "3D Designer, Full-Stack Developer", year: "2024", category: "Interactive learning",
     summary: "An AR mobile experience using ARCore and C# to make learning interactive.",
     body_html: "<p>Developed an augmented reality mobile application with ARCore and C#. The project combines 3D assets with interactive features to support an engaging learning experience.</p>",
-    stack: ["ARCore", "C#", "3D design"], live_url: "", repo_url: "", featured: true, sort_order: 4, published: true,
+    stack: ["ARCore", "C#", "3D design"], live_url: "", repo_url: "", featured: true, sort_order: 4, published: true, project_type: "case_study", media: [],
   },
   {
     id: "damath", slug: "damath", title: "DaMath Educational Game", role: "3D Designer", year: "2024", category: "Game design",
     summary: "Interactive 3D chessboard and game assets modeled in Blender.",
     body_html: "<p>Modeled the interactive 3D chessboard and game assets for an educational DaMath game, translating familiar board-game elements into a digital learning environment.</p>",
-    stack: ["Blender", "3D modeling", "Education"], live_url: "", repo_url: "", featured: false, sort_order: 5, published: true,
+    stack: ["Blender", "3D modeling", "Education"], live_url: "", repo_url: "", featured: false, sort_order: 5, published: true, project_type: "case_study", media: [],
   },
 ];
 
@@ -92,6 +92,8 @@ export const supplementalProjects: Project[] = [
     featured: true,
     sort_order: 6,
     published: true,
+    project_type: "case_study",
+    media: [],
   },
 ];
 
@@ -111,6 +113,8 @@ export const personalProjects: Project[] = [
     featured: false,
     sort_order: 1,
     published: true,
+    project_type: "personal",
+    media: [],
   },
   {
     id: "srt-renamer",
@@ -127,6 +131,8 @@ export const personalProjects: Project[] = [
     featured: false,
     sort_order: 2,
     published: true,
+    project_type: "personal",
+    media: [],
   },
 ];
 
@@ -141,5 +147,6 @@ export const fallbackContent: PortfolioContent = {
   profile: fallbackProfile,
   experiences: fallbackExperiences,
   projects: fallbackProjects,
+  personalProjects,
   certifications: fallbackCertifications,
 };

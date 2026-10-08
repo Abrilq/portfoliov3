@@ -42,6 +42,15 @@ export type Project = {
   featured: boolean;
   sort_order: number;
   published: boolean;
+  project_type: "case_study" | "personal";
+  media: ProjectMedia[];
+};
+
+export type ProjectMedia = {
+  path: string;
+  url: string;
+  name: string;
+  type: "image" | "video";
 };
 
 export type Certification = {
@@ -57,5 +66,6 @@ export type PortfolioContent = {
   profile: Profile;
   experiences: Experience[];
   projects: Project[];
+  personalProjects: Project[];
   certifications: Certification[];
 };

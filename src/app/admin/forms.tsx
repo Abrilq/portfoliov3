@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Plus, Save, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { Plus, Save, Trash2, Upload, Video, X } from "lucide-react";
 import { RichTextEditor } from "@/components/rich-text-editor";
+import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { ToolLogo, toolCatalog } from "@/lib/tool-icons";
-import type { Certification, Experience, Profile, Project } from "@/lib/types";
+import type { Certification, Experience, Profile, Project, ProjectMedia } from "@/lib/types";
 import {
   certificationSchema,
   experienceSchema,
@@ -28,6 +30,18 @@ type ProfileValues = z.infer<typeof profileSchema>;
 type ExperienceValues = z.input<typeof experienceSchema>;
 type ProjectValues = z.input<typeof projectSchema>;
 type CertificationValues = z.input<typeof certificationSchema>;
+const projectMediaBucket = "project-media";
+const maxProjectMediaSize = 100 * 1024 * 1024;
+const allowedProjectMediaTypes = new Set([
+  "image/avif",
+  "image/gif",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "video/mp4",
+  "video/quicktime",
+  "video/webm",
+]);
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return <label className="admin-field"><span>{label}</span>{children}{error && <small className="field-error">{error}</small>}</label>;
@@ -40,6 +54,10 @@ function FormFeedback({ result }: { result: ActionResult }) {
 
 function SaveButton({ label = "Save changes", busy }: { label?: string; busy?: boolean }) {
   return <button className="admin-save" type="submit" disabled={busy}><Save size={15} /> {busy ? "Saving…" : label}</button>;
+}
+
+function isProjectId(value: string | undefined): value is string {
+  return Boolean(value && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value));
 }
 
 function ToolsPicker({ value, onChange }: { value: string; onChange: (value: string) => void }) {
@@ -207,13 +225,89 @@ export function ExperienceForm({ experience }: { experience?: Experience }) {
   );
 }
 
+function ProjectMediaField({ slug, value, onChange }: { slug: string; value: ProjectMedia[]; onChange: (media: ProjectMedia[]) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  async function uploadFiles(files: FileList | null) {
+    if (!files?.length) return;
+    const selectedFiles = Array.from(files);
+    const invalidFile = selectedFiles.find((file) => !allowedProjectMediaTypes.has(file.type) || file.size > maxProjectMediaSize);
+    if (invalidFile) {
+      setError(`${invalidFile.name} is not supported. Use JPG, PNG, WebP, GIF, AVIF, MP4, WebM, or MOV files up to 100 MB.`);
+      return;
+    }
+
+    const supabase = createBrowserSupabaseClient();
+    if (!supabase) {
+      setError("Supabase is not configured. Add the public project URL and key before uploading media.");
+      return;
+    }
+
+    setBusy(true);
+    setError("");
+    const uploaded: ProjectMedia[] = [];
+    for (const file of selectedFiles) {
+      const safeName = file.name.replace(/[^\w.-]+/g, "-").slice(-100);
+      const path = `${slug || "draft"}/${crypto.randomUUID()}-${safeName}`;
+      const { error: uploadError } = await supabase.storage.from(projectMediaBucket).upload(path, file, {
+        contentType: file.type,
+        upsert: false,
+      });
+      if (uploadError) {
+        onChange([...value, ...uploaded]);
+        setError(`Could not upload ${file.name}: ${uploadError.message}`);
+        setBusy(false);
+        return;
+      }
+      const { data } = supabase.storage.from(projectMediaBucket).getPublicUrl(path);
+      uploaded.push({ path, url: data.publicUrl, name: file.name, type: file.type.startsWith("video/") ? "video" : "image" });
+    }
+    onChange([...value, ...uploaded]);
+    setBusy(false);
+  }
+
+  return (
+    <div className="project-media-field">
+      <label className="project-media-upload">
+        <input
+          accept="image/avif,image/gif,image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm"
+          disabled={busy}
+          multiple
+          onChange={(event) => {
+            void uploadFiles(event.currentTarget.files);
+            event.currentTarget.value = "";
+          }}
+          type="file"
+        />
+        <Upload size={15} /> {busy ? "Uploading media…" : "Upload photos or videos"}
+      </label>
+      <p className="project-media-hint">Supported: JPG, PNG, WebP, GIF, AVIF, MP4, WebM, MOV. Maximum 100 MB per file.</p>
+      {error && <p className="field-error" role="alert">{error}</p>}
+      {value.length > 0 && (
+        <ul className="project-media-list">
+          {value.map((item) => (
+            <li key={item.path}>
+              {item.type === "image"
+                ? <Image alt="" height={64} src={item.url} unoptimized width={96} />
+                : <span className="project-media-video"><Video size={20} /></span>}
+              <span>{item.name}</span>
+              <button aria-label={`Remove ${item.name}`} onClick={() => onChange(value.filter((media) => media.path !== item.path))} type="button"><X size={15} /></button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function ProjectForm({ project }: { project?: Project }) {
   const router = useRouter();
   const [result, setResult] = useState<ActionResult>({});
   const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm<ProjectValues>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      id: project?.id ?? "",
+      id: isProjectId(project?.id) ? project.id : "",
       slug: project?.slug ?? "",
       title: project?.title ?? "",
       role: project?.role ?? "",
@@ -227,6 +321,8 @@ export function ProjectForm({ project }: { project?: Project }) {
       featured: project?.featured ?? false,
       sort_order: project?.sort_order ?? 1,
       published: project?.published ?? true,
+      project_type: project?.project_type ?? "case_study",
+      media: project?.media ?? [],
     },
   });
   const submit = handleSubmit(async (values) => {
@@ -241,6 +337,7 @@ export function ProjectForm({ project }: { project?: Project }) {
       <div className="admin-form-grid">
         <Field label="Project title" error={errors.title?.message}><input {...register("title")} /></Field>
         <Field label="URL slug" error={errors.slug?.message}><input placeholder="project-name" {...register("slug")} /></Field>
+        <Field label="Project collection"><select {...register("project_type")}><option value="case_study">Case studies</option><option value="personal">Personal projects</option></select></Field>
         <Field label="Your role" error={errors.role?.message}><input {...register("role")} /></Field>
         <Field label="Year" error={errors.year?.message}><input {...register("year")} /></Field>
         <Field label="Category" error={errors.category?.message}><input {...register("category")} /></Field>
@@ -251,6 +348,10 @@ export function ProjectForm({ project }: { project?: Project }) {
       </div>
       <Field label="Short summary" error={errors.summary?.message}><textarea rows={3} {...register("summary")} /></Field>
       <Field label="Project body" error={errors.body_html?.message}><Controller control={control} name="body_html" render={({ field }) => <RichTextEditor value={field.value} onChange={field.onChange} />} /></Field>
+      <fieldset className="admin-field project-media-control">
+        <legend>Project photos and videos</legend>
+        <Controller control={control} name="media" render={({ field }) => <ProjectMediaField slug={project?.slug ?? ""} value={field.value} onChange={field.onChange} />} />
+      </fieldset>
       <div className="admin-form-actions"><label className="admin-toggle"><input type="checkbox" {...register("featured")} /> Feature on homepage</label><label className="admin-toggle"><input type="checkbox" {...register("published")} /> Published</label><FormFeedback result={result} /><SaveButton label={project ? "Save project" : "Add project"} busy={isSubmitting} /></div>
     </form>
   );

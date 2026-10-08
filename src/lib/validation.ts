@@ -35,7 +35,7 @@ export const projectSchema = z.object({
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase words separated by hyphens."),
   title: z.string().trim().min(2),
   role: z.string().trim().min(2),
-  year: z.string().trim().min(4),
+  year: z.string().trim(),
   category: z.string().trim().min(2),
   summary: z.string().trim().min(10),
   body_html: z.string().min(3),
@@ -45,6 +45,13 @@ export const projectSchema = z.object({
   featured: z.boolean(),
   sort_order: z.coerce.number().int().min(0),
   published: z.boolean(),
+  project_type: z.enum(["case_study", "personal"]),
+  media: z.array(z.object({
+    path: z.string().min(1),
+    url: z.url().refine((url) => /^https?:\/\//i.test(url), "Use an HTTP or HTTPS media URL."),
+    name: z.string().min(1),
+    type: z.enum(["image", "video"]),
+  })),
 });
 
 export const certificationSchema = z.object({

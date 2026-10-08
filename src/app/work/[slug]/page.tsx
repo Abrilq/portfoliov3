@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ProjectArtwork } from "@/components/project-artwork";
@@ -17,7 +18,7 @@ const demoLinks: Record<string, string> = {
 
 export async function generateStaticParams() {
   const content = await getPortfolioContent();
-  return [...content.projects, ...personalProjects].map((project) => ({ slug: project.slug }));
+  return [...content.projects, ...content.personalProjects].map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -41,7 +42,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       ? fallbackProjects.length + supplementalArtworkIndex
       : Math.max(0, fallbackProjects.filter((item) => item.featured).length + personalArtworkIndex);
   const demoUrl = demoLinks[project.slug];
-  const liveUrl = demoUrl ?? project.live_url;
+  const liveUrl = project.live_url || demoUrl;
 
   return (
     <PortfolioStyleProvider>
@@ -56,6 +57,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <Link className="back-link" href="/#work"><ArrowLeft size={15} /> Back to selected work</Link>
           <div className="detail-heading"><div><p className="eyebrow">{project.category}{project.year && ` / ${project.year}`}</p><h1>{project.title}</h1></div><p>{project.summary}<br /><br /><strong>{project.role}</strong></p></div>
           <div className="detail-art"><ProjectArtwork project={project} index={artworkIndex} /></div>
+          {project.media.length > 0 && (
+            <div className="project-media-gallery" aria-label={`${project.title} photos and videos`}>
+              {project.media.map((media) => (
+                <figure key={media.path}>
+                  {media.type === "video"
+                    ? <video controls playsInline preload="metadata"><source src={media.url} /></video>
+                    : <Image alt={media.name} height={900} src={media.url} unoptimized width={1600} />}
+                  <figcaption>{media.name}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
           <div className="detail-body" dangerouslySetInnerHTML={{ __html: project.body_html }} />
           <div className="detail-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
           {(liveUrl || project.repo_url) && <div className="detail-links">{liveUrl && <a className="detail-primary" href={liveUrl} target="_blank" rel="noreferrer">{demoUrl ? "Try the webapp" : "Visit project"} <ArrowUpRight size={17} /></a>}{project.repo_url && <a className="detail-secondary" href={project.repo_url} target="_blank" rel="noreferrer">View source <ArrowUpRight size={15} /></a>}</div>}

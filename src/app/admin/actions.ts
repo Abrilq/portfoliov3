@@ -3,6 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import sanitizeHtml from "sanitize-html";
+import type { ProjectMedia } from "@/lib/types";
 import { certificationSchema, deleteContentSchema, experienceSchema, profileSchema, projectSchema } from "@/lib/validation";
 import { createSupabaseServerClient, getCurrentAdmin } from "@/lib/supabase/server";
 
@@ -89,15 +90,30 @@ export async function saveProjectAction(input: unknown): Promise<ActionResult> {
   const parsed = projectSchema.safeParse(input);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Check the project fields." };
 
-  const { body_html, stack_text, ...values } = parsed.data;
+  const { id, body_html, stack_text, media, ...values } = parsed.data;
+  const previousResult = id
+    ? await supabase.from("projects").select("media").eq("id", id).maybeSingle()
+    : await supabase.from("projects").select("media").eq("slug", values.slug).maybeSingle();
+  if (previousResult.error) return { error: previousResult.error.message };
+
   const { error } = await supabase.from("projects").upsert({
+    ...(id ? { id } : {}),
     ...values,
     body_html: sanitizeHtml(body_html),
     stack: stack_text.split(",").map((item) => item.trim()).filter(Boolean),
+    media,
     updated_at: new Date().toISOString(),
-  });
+  }, { onConflict: "slug" });
   if (error) return { error: error.message };
   refreshPortfolio();
+  const savedPaths = new Set(media.map((item) => item.path));
+  const removedPaths = ((previousResult.data?.media as ProjectMedia[] | null) ?? [])
+    .map((item) => item.path)
+    .filter((path) => !savedPaths.has(path));
+  if (removedPaths.length > 0) {
+    const { error: cleanupError } = await supabase.storage.from("project-media").remove(removedPaths);
+    if (cleanupError) return { error: `Project saved, but removed media could not be cleaned up: ${cleanupError.message}` };
+  }
   return { success: "Project saved." };
 }
 
@@ -119,8 +135,19 @@ export async function deleteContentAction(input: unknown): Promise<ActionResult>
   const parsed = deleteContentSchema.safeParse(input);
   if (!parsed.success) return { error: "The selected item could not be deleted." };
 
+  let mediaPaths: string[] = [];
+  if (parsed.data.table === "projects") {
+    const projectResult = await supabase.from("projects").select("media").eq("id", parsed.data.id).maybeSingle();
+    if (projectResult.error) return { error: projectResult.error.message };
+    mediaPaths = ((projectResult.data?.media as ProjectMedia[] | null) ?? []).map((item) => item.path);
+  }
+
   const { error } = await supabase.from(parsed.data.table).delete().eq("id", parsed.data.id);
   if (error) return { error: error.message };
   refreshPortfolio();
+  if (mediaPaths.length > 0) {
+    const { error: cleanupError } = await supabase.storage.from("project-media").remove(mediaPaths);
+    if (cleanupError) return { error: `Item deleted, but its media could not be cleaned up: ${cleanupError.message}` };
+  }
   return { success: "Item deleted." };
 }

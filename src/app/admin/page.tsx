@@ -7,7 +7,7 @@ export default async function AdminDashboard() {
   const items = [
     { href: "/admin/resume-details", label: "Resume details", count: "01", detail: "Personal details, headline, and education", icon: FileText },
     { href: "/admin/experience", label: "Experience", count: String(content.experiences.length).padStart(2, "0"), detail: "Roles, highlights, and visibility", icon: BriefcaseBusiness },
-    { href: "/admin/projects", label: "Projects", count: String(content.projects.length).padStart(2, "0"), detail: "Case studies and rich-text project pages", icon: FolderKanban },
+    { href: "/admin/projects", label: "Projects", count: String(content.projects.length + content.personalProjects.length).padStart(2, "0"), detail: "Case studies, personal projects, and media", icon: FolderKanban },
     { href: "/admin/certifications", label: "Certifications", count: String(content.certifications.length).padStart(2, "0"), detail: "Credentials shown on the portfolio", icon: Award },
   ];
 
