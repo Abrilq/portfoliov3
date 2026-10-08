@@ -104,7 +104,9 @@ export default async function Home() {
             ))}
           </div>
           <div className="project-footnote personal-project-footnote">
-            <span>Currently {personalProjects.length} personal project{personalProjects.length === 1 ? "" : "s"}.</span>
+            <Link href="/work/personal">
+              Currently {personalProjects.length} personal project{personalProjects.length === 1 ? "" : "s"} <ArrowRight size={14} />
+            </Link>
           </div>
         </section>
 
