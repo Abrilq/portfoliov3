@@ -10,7 +10,7 @@ export const revalidate = 300;
 
 const demoLinks: Record<string, string> = {
   "lost-and-found": "https://lnfdemoapp.vercel.app/",
-  "eyewear-store": "https://illustrious-donut-bb8d96.netlify.app/",
+  "eyewear-store": "https://pro-website-cat-peas.vercel.app/",
   "drinking-session": "https://shotpuno.vercel.app/",
   "srt-renamer": "https://srt-renamer.vercel.app/",
 };

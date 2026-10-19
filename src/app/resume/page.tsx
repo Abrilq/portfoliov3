@@ -79,7 +79,7 @@ export default async function ResumePage() {
                       <div className="resume-project-links">
                         {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
                         {project.slug === "lost-and-found" && <a href="https://lnfdemoapp.vercel.app/" target="_blank" rel="noreferrer">Try the web app <ArrowUpRight size={13} /></a>}
-                        {project.slug === "eyewear-store" && <a href="https://illustrious-donut-bb8d96.netlify.app/" target="_blank" rel="noreferrer">View live site <ArrowUpRight size={13} /></a>}
+                        {project.slug === "eyewear-store" && <a href="https://pro-website-cat-peas.vercel.app/" target="_blank" rel="noreferrer">View live site <ArrowUpRight size={13} /></a>}
                       </div>
                     </div>
                     <p>{project.summary}</p>

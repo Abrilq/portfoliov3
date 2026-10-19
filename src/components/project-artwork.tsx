@@ -369,11 +369,11 @@ function EyewearStoreDemo() {
     <div className="artwork-demo eyewear-demo">
       <header className="eyewear-live-toolbar">
         <span><i aria-hidden="true" /> LIVE STORE</span>
-        <a href="https://illustrious-donut-bb8d96.netlify.app/" target="_blank" rel="noreferrer">Open in new tab ↗</a>
+        <a href="https://pro-website-cat-peas.vercel.app/" target="_blank" rel="noreferrer">Open in new tab ↗</a>
       </header>
       <iframe
         className="eyewear-live-frame"
-        src="https://illustrious-donut-bb8d96.netlify.app/"
+        src="https://pro-website-cat-peas.vercel.app/"
         title="Live Cat'peas eyewear store"
         loading="lazy"
         referrerPolicy="strict-origin-when-cross-origin"
