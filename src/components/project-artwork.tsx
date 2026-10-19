@@ -223,11 +223,12 @@ function EyewearStoreDemo() {
 
 export function ProjectArtwork({ project, index, interactiveMedia = false }: { project: Project; index: number; interactiveMedia?: boolean }) {
   const hasMedia = project.media.length > 0;
+  const hasVideoMedia = project.media.some((media) => media.type === "video");
   const hasExistingArtwork = existingProjectSlugs.has(project.slug);
   const isInteractiveProject = interactiveMedia && interactiveProjectSlugs.has(project.slug) && !hasMedia;
 
   return (
-    <div className={`project-artwork artwork-${(index % 5) + 1}${interactiveMedia && hasMedia ? " project-artwork-media" : ""}${isInteractiveProject ? ` project-artwork--demo project-artwork--${project.slug}` : ""}`} aria-hidden={interactiveMedia ? undefined : true}>
+    <div className={`project-artwork artwork-${(index % 5) + 1}${interactiveMedia && hasMedia ? " project-artwork-media" : ""}${interactiveMedia && hasVideoMedia ? " project-artwork-media-video" : ""}${isInteractiveProject ? ` project-artwork--demo project-artwork--${project.slug}` : ""}`} aria-hidden={interactiveMedia ? undefined : true}>
       <div className="artwork-window">
         <div className="artwork-window-bar"><span /><span /><span /><b>{project.category}</b></div>
         <div className={`artwork-window-content${hasMedia ? " has-project-media" : ""}${interactiveMedia ? " is-interactive-artwork" : ""}${isInteractiveProject ? " has-project-demo" : ""}`}>
