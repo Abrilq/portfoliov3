@@ -17,6 +17,9 @@ export const profileSchema = z.object({
 });
 
 const optionalId = z.string().optional().transform((value) => value || undefined);
+const optionalWebUrl = z.url("Enter a valid URL.")
+  .refine((value) => /^https?:\/\//i.test(value), "Use an HTTP or HTTPS URL.")
+  .or(z.literal(""));
 
 export const experienceSchema = z.object({
   id: optionalId,
@@ -40,7 +43,7 @@ export const projectSchema = z.object({
   summary: z.string().trim().min(10),
   body_html: z.string().min(3),
   stack_text: z.string(),
-  live_url: z.url("Enter a valid URL.").or(z.literal("")),
+  live_url: optionalWebUrl,
   repo_url: z.url("Enter a valid URL.").or(z.literal("")),
   featured: z.boolean(),
   sort_order: z.coerce.number().int().min(0),

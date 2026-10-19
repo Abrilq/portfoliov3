@@ -8,13 +8,6 @@ import { getPortfolioContent, getPortfolioProject } from "@/lib/data";
 
 export const revalidate = 300;
 
-const demoLinks: Record<string, string> = {
-  "lost-and-found": "https://lnfdemoapp.vercel.app/",
-  "eyewear-store": "https://pro-website-cat-peas.vercel.app/",
-  "drinking-session": "https://shotpuno.vercel.app/",
-  "srt-renamer": "https://srt-renamer.vercel.app/",
-};
-
 export async function generateStaticParams() {
   const content = await getPortfolioContent();
   return [...content.projects, ...content.personalProjects].map((project) => ({ slug: project.slug }));
@@ -40,8 +33,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     : supplementalArtworkIndex >= 0
       ? fallbackProjects.length + supplementalArtworkIndex
       : Math.max(0, fallbackProjects.filter((item) => item.featured).length + personalArtworkIndex);
-  const demoUrl = demoLinks[project.slug];
-  const liveUrl = project.live_url || demoUrl;
+  const liveUrl = project.live_url.trim();
 
   return (
     <PortfolioStyleProvider>
@@ -58,7 +50,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <div className="detail-art"><ProjectArtwork interactiveMedia project={project} index={artworkIndex} /></div>
           <div className="detail-body" dangerouslySetInnerHTML={{ __html: project.body_html }} />
           <div className="detail-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
-          {(liveUrl || project.repo_url) && <div className="detail-links">{liveUrl && <a className="detail-primary" href={liveUrl} target="_blank" rel="noreferrer">{demoUrl ? "Try the webapp" : "Visit project"} <ArrowUpRight size={17} /></a>}{project.repo_url && <a className="detail-secondary" href={project.repo_url} target="_blank" rel="noreferrer">View source <ArrowUpRight size={15} /></a>}</div>}
+          {(liveUrl || project.repo_url) && <div className="detail-links">{liveUrl && <a className="detail-primary" href={liveUrl} target="_blank" rel="noreferrer">Visit project <ArrowUpRight size={17} /></a>}{project.repo_url && <a className="detail-secondary" href={project.repo_url} target="_blank" rel="noreferrer">View source <ArrowUpRight size={15} /></a>}</div>}
         </article>
       </div>
     </main>

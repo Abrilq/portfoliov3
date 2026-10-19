@@ -77,9 +77,7 @@ export default async function ResumePage() {
                         <p className="resume-project-role">{project.role}</p>
                       </div>
                       <div className="resume-project-links">
-                        {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
-                        {project.slug === "lost-and-found" && <a href="https://lnfdemoapp.vercel.app/" target="_blank" rel="noreferrer">Try the web app <ArrowUpRight size={13} /></a>}
-                        {project.slug === "eyewear-store" && <a href="https://pro-website-cat-peas.vercel.app/" target="_blank" rel="noreferrer">View live site <ArrowUpRight size={13} /></a>}
+                        {project.live_url.trim() && <a href={project.live_url.trim()} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
                       </div>
                     </div>
                     <p>{project.summary}</p>
@@ -101,7 +99,7 @@ export default async function ResumePage() {
                         <p className="resume-project-role">{project.role}</p>
                       </div>
                       <div className="resume-project-links">
-                        {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
+                        {project.live_url.trim() && <a href={project.live_url.trim()} target="_blank" rel="noreferrer">View project <ArrowUpRight size={13} /></a>}
                       </div>
                     </div>
                     <p>{project.summary}</p>

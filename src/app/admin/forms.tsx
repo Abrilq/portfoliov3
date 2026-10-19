@@ -342,7 +342,10 @@ export function ProjectForm({ project }: { project?: Project }) {
         <Field label="Year" error={errors.year?.message}><input {...register("year")} /></Field>
         <Field label="Category" error={errors.category?.message}><input {...register("category")} /></Field>
         <Field label="Display order"><input type="number" min="0" {...register("sort_order", { valueAsNumber: true })} /></Field>
-        <Field label="Live project URL" error={errors.live_url?.message}><input type="url" {...register("live_url")} /></Field>
+        <Field label="Live project URL" error={errors.live_url?.message}>
+          <input type="url" placeholder="https://example.com" {...register("live_url")} />
+          <small className="field-hint">Used for the project-page button and live artwork preview. Leave blank to show the default artwork.</small>
+        </Field>
         <Field label="Source repository URL" error={errors.repo_url?.message}><input type="url" {...register("repo_url")} /></Field>
         <Field label="Technologies / tags" error={errors.stack_text?.message}><input placeholder="React, TypeScript, Figma" {...register("stack_text")} /></Field>
       </div>
