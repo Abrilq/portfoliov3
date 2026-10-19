@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
+import { useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import type { Project } from "@/lib/types";
 import "./project-artwork.css";
 
@@ -49,180 +49,19 @@ function ExistingProjectArtwork({ project, index }: { project: Project; index: n
 }
 
 function ShotpunoDemo() {
-  const [players, setPlayers] = useState<string[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [firstClick, setFirstClick] = useState(true);
-  const [playerName, setPlayerName] = useState("");
-  const [showManage, setShowManage] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
-  const [storageMessage, setStorageMessage] = useState("");
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const artworkRef = useRef<HTMLDivElement>(null);
-  const draggedIndex = useRef<number | null>(null);
-
-  useEffect(() => {
-    let isActive = true;
-    const timeout = window.setTimeout(() => {
-      if (!isActive) return;
-      try {
-        const savedPlayers = window.localStorage.getItem("shotpuno_players");
-        const savedIndex = window.localStorage.getItem("shotpuno_currentIndex");
-        const savedFirstClick = window.localStorage.getItem("shotpuno_firstClick");
-        if (savedPlayers) {
-          const parsedPlayers: unknown = JSON.parse(savedPlayers);
-          if (Array.isArray(parsedPlayers) && parsedPlayers.every((player) => typeof player === "string")) {
-            setPlayers(parsedPlayers);
-          }
-        }
-        if (savedIndex !== null && Number.isInteger(Number(savedIndex))) {
-          setCurrentIndex(Math.max(0, Number(savedIndex)));
-        }
-        if (savedFirstClick !== null) {
-          const parsedFirstClick: unknown = JSON.parse(savedFirstClick);
-          if (typeof parsedFirstClick === "boolean") setFirstClick(parsedFirstClick);
-        }
-      } catch {
-        setStorageMessage("Saved session could not be read. Your changes will still work for now.");
-      } finally {
-        setHasLoaded(true);
-      }
-    }, 0);
-    return () => {
-      isActive = false;
-      window.clearTimeout(timeout);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!hasLoaded) return;
-    try {
-      window.localStorage.setItem("shotpuno_players", JSON.stringify(players));
-      window.localStorage.setItem("shotpuno_currentIndex", String(currentIndex));
-      window.localStorage.setItem("shotpuno_firstClick", JSON.stringify(firstClick));
-    } catch {
-      window.setTimeout(() => setStorageMessage("This browser could not save your player list."), 0);
-    }
-  }, [currentIndex, firstClick, hasLoaded, players]);
-
-  useEffect(() => {
-    const syncFullscreen = () => setIsFullscreen(document.fullscreenElement === artworkRef.current);
-    document.addEventListener("fullscreenchange", syncFullscreen);
-    return () => document.removeEventListener("fullscreenchange", syncFullscreen);
-  }, []);
-
-  const currentPlayer = players[currentIndex] ?? "";
-
-  function addPlayer() {
-    const name = playerName.trim();
-    if (!name) return;
-    setPlayers((current) => [...current, name]);
-    setPlayerName("");
-    if (players.length === 0) {
-      setCurrentIndex(0);
-      setFirstClick(true);
-    }
-  }
-
-  function advancePlayer() {
-    if (!players.length) return;
-    setCurrentIndex((index) => firstClick ? 1 % players.length : (index + 1) % players.length);
-    setFirstClick(false);
-  }
-
-  function removePlayer(index: number) {
-    const remaining = players.filter((_, playerIndex) => playerIndex !== index);
-    setPlayers(remaining);
-    if (!remaining.length) {
-      setCurrentIndex(0);
-      setFirstClick(true);
-      return;
-    }
-    if (index < currentIndex) setCurrentIndex(currentIndex - 1);
-    else if (index === currentIndex) setCurrentIndex(Math.min(index, remaining.length - 1));
-  }
-
-  function movePlayer(from: number, to: number) {
-    if (from === to || to < 0 || to >= players.length) return;
-    const reordered = [...players];
-    const [player] = reordered.splice(from, 1);
-    reordered.splice(to, 0, player);
-    setPlayers(reordered);
-    if (currentIndex === from) setCurrentIndex(to);
-    else if (from < currentIndex && to >= currentIndex) setCurrentIndex(currentIndex - 1);
-    else if (from > currentIndex && to <= currentIndex) setCurrentIndex(currentIndex + 1);
-  }
-
-  async function toggleFullscreen() {
-    if (!artworkRef.current) return;
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await artworkRef.current.requestFullscreen();
-    } catch {
-      setStorageMessage("Fullscreen is not available in this browser.");
-    }
-  }
-
   return (
-    <div className={`artwork-demo shotpuno-demo${isFullscreen ? " is-fullscreen" : ""}`} ref={artworkRef}>
-      <div className="demo-heading">
-        <div><span className="demo-kicker">THE GROUP GAME</span><strong>SHOTPUNO</strong></div>
-        <button className="demo-icon-button" type="button" aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} onClick={toggleFullscreen}>
-          {isFullscreen ? "↙" : "⛶"}
-        </button>
-      </div>
-      <div className="shotpuno-layout">
-        <section className="shotpuno-turn">
-          <div className="shotpuno-turn-top"><span>UP NEXT</span><span>{players.length ? `${String(currentIndex + 1).padStart(2, "0")} / ${String(players.length).padStart(2, "0")}` : "READY WHEN YOU ARE"}</span></div>
-          <button className="shotpuno-current" type="button" onClick={advancePlayer} aria-label="Show the next player">
-            <span className="shotpuno-orbit" aria-hidden="true">✳</span>
-            <small>{players.length ? "IT'S YOUR TURN" : "ADD YOUR CREW"}</small>
-            <strong>{currentPlayer || "Who's\nnext?"}</strong>
-            <span className="shotpuno-tap">{players.length ? "TAP TO PASS THE TURN ↗" : "YOUR NEXT ROUND STARTS HERE"}</span>
-          </button>
-          <button className="demo-primary-button shotpuno-next" type="button" onClick={advancePlayer} disabled={!players.length}>
-            Next player <span aria-hidden="true">↗</span>
-          </button>
-        </section>
-        <section className="shotpuno-roster" aria-label="Player list">
-          <div className="shotpuno-roster-heading">
-            <div><span className="demo-kicker">IN THIS ROUND</span><strong>Players <i>{players.length}</i></strong></div>
-            <button className="demo-text-button" type="button" onClick={() => setShowManage((value) => !value)} aria-expanded={showManage}>{showManage ? "Done" : "Manage"}</button>
-          </div>
-          <form className="shotpuno-add" onSubmit={(event) => { event.preventDefault(); addPlayer(); }}>
-            <label className="sr-only" htmlFor="shotpuno-player-name">Player name</label>
-            <input id="shotpuno-player-name" value={playerName} onChange={(event) => setPlayerName(event.target.value)} placeholder="Add a player…" maxLength={32} />
-            <button type="submit" aria-label="Add player" disabled={!playerName.trim()}>+</button>
-          </form>
-          {players.length ? (
-            <ul className="shotpuno-player-list">
-              {players.map((player, index) => (
-                <li
-                  key={`${player}-${index}`}
-                  className={index === currentIndex ? "is-current-player" : ""}
-                  draggable={showManage}
-                  onDragStart={(event) => { draggedIndex.current = index; event.dataTransfer.effectAllowed = "move"; }}
-                  onDragOver={(event) => event.preventDefault()}
-                  onDrop={(event) => { event.preventDefault(); if (draggedIndex.current !== null) movePlayer(draggedIndex.current, index); draggedIndex.current = null; }}
-                  onDragEnd={() => { draggedIndex.current = null; }}
-                >
-                  <button className="shotpuno-player-select" type="button" onClick={() => { setCurrentIndex(index); setFirstClick(false); }} aria-current={index === currentIndex ? "true" : undefined}>
-                    <span className="player-number">{String(index + 1).padStart(2, "0")}</span><span className="player-name">{player}</span>{index === currentIndex && <span className="player-turn-dot" aria-label="Current player" />}
-                  </button>
-                  {showManage && <div className="player-manage-actions">
-                    <button type="button" aria-label={`Move ${player} up`} disabled={index === 0} onClick={() => movePlayer(index, index - 1)}>↑</button>
-                    <button type="button" aria-label={`Move ${player} down`} disabled={index === players.length - 1} onClick={() => movePlayer(index, index + 1)}>↓</button>
-                    <button type="button" aria-label={`Remove ${player}`} onClick={() => removePlayer(index)}>×</button>
-                  </div>}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="shotpuno-empty"><span aria-hidden="true">＋</span><p>Your crew will show up here.<br />Add someone to start.</p></div>
-          )}
-          <p className="shotpuno-hint">{showManage ? "Drag to reorder, or use the arrows." : "Add names, then tap the card to pass."}</p>
-        </section>
-      </div>
-      {storageMessage && <p className="demo-status-message" role="status">{storageMessage}</p>}
+    <div className="artwork-demo shotpuno-demo">
+      <header className="shotpuno-live-toolbar">
+        <span><i aria-hidden="true" /> LIVE DEMO</span>
+        <a href="https://shotpuno.vercel.app/" target="_blank" rel="noreferrer">Open in new tab ↗</a>
+      </header>
+      <iframe
+        className="shotpuno-live-frame"
+        src="https://shotpuno.vercel.app/"
+        title="Live Shotpuno drinking session app"
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
     </div>
   );
 }
