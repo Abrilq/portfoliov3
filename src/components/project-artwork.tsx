@@ -364,40 +364,20 @@ function LostAndFoundDemo() {
   );
 }
 
-const eyewearProducts = [
-  { name: "The Audrey", kind: "OPTICAL · CAT-EYE", price: 128, tint: "plum" },
-  { name: "The Sunday", kind: "SUN · ROUND", price: 148, tint: "tortoise" },
-  { name: "The Atlas", kind: "OPTICAL · SQUARE", price: 138, tint: "olive" },
-];
-
 function EyewearStoreDemo() {
-  const [selectedProduct, setSelectedProduct] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
-  const [added, setAdded] = useState(false);
-  const product = eyewearProducts[selectedProduct];
-
   return (
     <div className="artwork-demo eyewear-demo">
-      <header className="eyewear-topbar"><strong className="eyewear-wordmark">cat&apos;peas<span>®</span></strong><nav aria-label="Shop categories"><span className="is-active">Eyewear</span><span>Our story</span></nav><div className="eyewear-bag">Bag <span>{String(cartCount).padStart(2, "0")}</span></div></header>
-      <div className="eyewear-content">
-        <div className="eyewear-product-copy">
-          <span className="demo-kicker">EVERYDAY ICONS · {String(selectedProduct + 1).padStart(2, "0")}</span>
-          <h2>{product.name}</h2>
-          <p>Made to be lived in.<br />Designed to be kept.</p>
-          <strong className="eyewear-price">${product.price}.00 <small>USD</small></strong>
-          <span className="eyewear-option-label">COLOR · {["INK", "HONEY", "MOSS"][selectedColor]}</span>
-          <div className="eyewear-swatches" aria-label="Choose frame color">{["ink", "honey", "moss"].map((color, index) => <button key={color} type="button" className={`eyewear-swatch eyewear-swatch--${color}${selectedColor === index ? " is-selected" : ""}`} aria-label={`${color} frame`} aria-pressed={selectedColor === index} onClick={() => setSelectedColor(index)} />)}</div>
-          <button className="eyewear-add-button" type="button" onClick={() => { setCartCount((count) => count + 1); setAdded(true); }}>{added ? "Added to bag ✓" : "Add to bag"} <span aria-hidden="true">↗</span></button>
-          {added && <p className="eyewear-added" role="status">{product.name} is in your bag ({cartCount}).</p>}
-        </div>
-        <div className={`eyewear-product-stage eyewear-product-stage--${product.tint}`} aria-label={`${product.name} eyewear product preview`}>
-          <span className="eyewear-stage-note">CAT&apos;PEAS STUDIO / 04</span>
-          <div className={`eyewear-glasses eyewear-glasses--${product.tint} eyewear-glasses--color-${["ink", "honey", "moss"][selectedColor]}`} aria-hidden="true"><span /><i /><span /></div>
-          <div className="eyewear-stage-caption"><span>01 — 03</span><b>{product.kind}</b></div>
-        </div>
-      </div>
-      <div className="eyewear-product-rail"><span>THE COLLECTION</span>{eyewearProducts.map((item, index) => <button key={item.name} type="button" className={selectedProduct === index ? "is-active" : ""} onClick={() => { setSelectedProduct(index); setAdded(false); }}><i className={`eyewear-mini-frame eyewear-mini-frame--${item.tint}`} aria-hidden="true" />{item.name}<span>${item.price}</span></button>)}</div>
+      <header className="eyewear-live-toolbar">
+        <span><i aria-hidden="true" /> LIVE STORE</span>
+        <a href="https://illustrious-donut-bb8d96.netlify.app/" target="_blank" rel="noreferrer">Open in new tab ↗</a>
+      </header>
+      <iframe
+        className="eyewear-live-frame"
+        src="https://illustrious-donut-bb8d96.netlify.app/"
+        title="Live Cat'peas eyewear store"
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
     </div>
   );
 }

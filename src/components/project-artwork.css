@@ -197,65 +197,14 @@
 .found-live-toolbar > a:hover { text-decoration: underline; }
 .found-live-frame { width: 100%; min-height: 0; flex: 1; border: 0; background: #020617; }
 
-/* Cat'peas eyewear storefront */
-.eyewear-demo { --eye-ink: #26312b; --eye-muted: #7f847a; --eye-olive: #60684b; background: #f6f3ec; color: var(--eye-ink); font-family: Georgia, "Times New Roman", serif; }
-.eyewear-topbar { height: 43px; padding: 0 18px; flex: 0 0 43px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dfded5; }
-.eyewear-wordmark { padding: 0; border: 0; background: transparent; font-family: Georgia, "Times New Roman", serif !important; font-size: 17px !important; font-weight: 700 !important; letter-spacing: -.08em; }
-.eyewear-wordmark span { margin-left: 2px; font-family: Arial, sans-serif; font-size: 7px; vertical-align: top; }
-.eyewear-topbar nav { display: flex; gap: 16px; }
-.eyewear-topbar nav span, .eyewear-bag { padding: 4px 0; border: 0; background: transparent; color: #70756c; font-family: Arial, sans-serif !important; font-size: 8px !important; }
-.eyewear-topbar nav span.is-active { color: var(--eye-ink); }
-.eyewear-bag { display: flex; align-items: center; gap: 6px; color: var(--eye-ink); }
-.eyewear-bag span { width: 17px; height: 17px; display: grid; place-items: center; border: 1px solid #b6b8ae; border-radius: 50%; font-size: 7px; }
-.eyewear-content { min-height: 0; padding: 17px 22px 14px; flex: 1; display: grid; grid-template-columns: minmax(150px, .74fr) minmax(230px, 1.26fr); gap: 18px; }
-.eyewear-product-copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
-.eyewear-product-copy .demo-kicker, .eyewear-option-label { color: var(--eye-muted); font-family: Arial, sans-serif; font-size: 7px; letter-spacing: .12em; }
-.eyewear-product-copy h2 { margin: 12px 0 7px; font-size: clamp(23px, 3vw, 36px); font-weight: 400; letter-spacing: -.06em; line-height: 1; }
-.eyewear-product-copy > p { margin: 0; color: #6e746c; font-size: 11px; line-height: 1.45; }
-.eyewear-price { margin: 15px 0 17px; font-size: 14px; font-weight: 400; }
-.eyewear-price small { color: var(--eye-muted); font-family: Arial, sans-serif; font-size: 7px; }
-.eyewear-option-label { margin-bottom: 7px; }
-.eyewear-swatches { margin-bottom: 15px; display: flex; gap: 7px; }
-.eyewear-swatch { width: 17px; height: 17px; padding: 0; border: 2px solid #f6f3ec; border-radius: 50%; box-shadow: 0 0 0 1px transparent; }
-.eyewear-swatch.is-selected { box-shadow: 0 0 0 1px var(--eye-ink); }
-.eyewear-swatch--ink { background: #35362f; }
-.eyewear-swatch--honey { background: #986b43; }
-.eyewear-swatch--moss { background: #667153; }
-.eyewear-add-button { width: 100%; min-height: 34px; margin-top: auto; padding: 0 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--eye-ink); background: var(--eye-ink); color: #fff !important; font-family: Arial, sans-serif !important; font-size: 9px !important; }
-.eyewear-added { margin: 5px 0 0 !important; color: var(--eye-olive) !important; font-family: Arial, sans-serif; font-size: 8px !important; }
-.eyewear-product-stage { min-width: 0; position: relative; display: grid; place-items: center; overflow: hidden; background: #ded8c8; }
-.eyewear-product-stage--plum { background: #ded8cf; }
-.eyewear-product-stage--tortoise { background: #d7d4c6; }
-.eyewear-product-stage--olive { background: #d9d9cb; }
-.eyewear-stage-note, .eyewear-stage-caption { position: absolute; z-index: 1; left: 10px; right: 10px; display: flex; justify-content: space-between; color: #73746a; font-family: Arial, sans-serif; font-size: 7px; letter-spacing: .08em; }
-.eyewear-stage-note { top: 9px; }
-.eyewear-stage-caption { bottom: 9px; }
-.eyewear-stage-caption b { font-weight: 500; }
-.eyewear-glasses { width: min(78%, 270px); aspect-ratio: 2.3; position: relative; display: flex; align-items: center; justify-content: space-between; filter: drop-shadow(1px 10px 8px #27251c32); transform: rotate(-8deg); }
-.eyewear-glasses::before { width: 12%; height: 5px; position: absolute; left: 44%; top: 27%; border-radius: 50%; background: #302d28; content: ""; }
-.eyewear-glasses::after { width: 40%; height: 9px; position: absolute; right: -20%; top: 38%; border-top: 3px solid #39372e; transform: rotate(-18deg); content: ""; }
-.eyewear-glasses > span { width: 43%; height: 70%; border: 8px solid #37352c; border-radius: 34% 34% 43% 43%; background: #80705a3d; }
-.eyewear-glasses > i { width: 12%; height: 3px; background: #37352c; }
-.eyewear-glasses--plum > span { border-color: #51484a; }
-.eyewear-glasses--plum::after, .eyewear-glasses--plum::before, .eyewear-glasses--plum > i { background-color: #51484a; }
-.eyewear-glasses--tortoise > span { border-color: #74563e; }
-.eyewear-glasses--tortoise::after, .eyewear-glasses--tortoise::before, .eyewear-glasses--tortoise > i { background-color: #74563e; }
-.eyewear-glasses--olive > span { border-color: #59614b; }
-.eyewear-glasses--olive::after, .eyewear-glasses--olive::before, .eyewear-glasses--olive > i { background-color: #59614b; }
-.eyewear-glasses--color-ink > span { border-color: #35362f; }
-.eyewear-glasses--color-ink::after, .eyewear-glasses--color-ink::before, .eyewear-glasses--color-ink > i { background-color: #35362f; }
-.eyewear-glasses--color-honey > span { border-color: #986b43; }
-.eyewear-glasses--color-honey::after, .eyewear-glasses--color-honey::before, .eyewear-glasses--color-honey > i { background-color: #986b43; }
-.eyewear-glasses--color-moss > span { border-color: #667153; }
-.eyewear-glasses--color-moss::after, .eyewear-glasses--color-moss::before, .eyewear-glasses--color-moss > i { background-color: #667153; }
-.eyewear-product-rail { min-height: 56px; padding: 7px 18px; display: flex; align-items: center; gap: 14px; overflow-x: auto; border-top: 1px solid #dfded5; }
-.eyewear-product-rail > span { flex: 0 0 auto; color: var(--eye-muted); font-family: Arial, sans-serif; font-size: 7px; letter-spacing: .08em; }
-.eyewear-product-rail > button { min-width: 0; height: 34px; padding: 4px 8px; display: flex; align-items: center; gap: 6px; border: 1px solid transparent; background: transparent; font-size: 9px; white-space: nowrap; }
-.eyewear-product-rail > button.is-active { border-color: #d7d5cc; background: #fbfaf7; }
-.eyewear-product-rail > button > span { color: var(--eye-muted); font-family: Arial, sans-serif; font-size: 8px; }
-.eyewear-mini-frame { width: 20px; height: 10px; border: 2px solid #51484a; border-radius: 5px 5px 7px 7px; }
-.eyewear-mini-frame--tortoise { border-color: #74563e; }
-.eyewear-mini-frame--olive { border-color: #59614b; }
+/* Live Cat'peas eyewear store */
+.eyewear-demo { background: #fff; color: #26312b; }
+.eyewear-live-toolbar { min-height: 30px; padding: 0 10px; flex: 0 0 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e4e4e4; background: #fbfaf7; color: #70756c; font-size: 8px; letter-spacing: .08em; }
+.eyewear-live-toolbar > span { display: flex; align-items: center; gap: 6px; font-weight: 700; }
+.eyewear-live-toolbar > span i { width: 6px; height: 6px; border-radius: 50%; background: #4a9b61; }
+.eyewear-live-toolbar > a { color: #26312b; font-size: 8px; letter-spacing: 0; text-decoration: none; }
+.eyewear-live-toolbar > a:hover { text-decoration: underline; }
+.eyewear-live-frame { width: 100%; min-height: 0; flex: 1; border: 0; background: #f6f3ec; }
 
 @media (max-width: 760px) {
 	.project-artwork--demo { height: 540px; padding: 10px; }
@@ -266,8 +215,6 @@
 	.srt-layout { grid-template-columns: minmax(145px, .8fr) minmax(0, 1.2fr); gap: 12px; padding-right: 13px; padding-left: 13px; }
 	.srt-file-tray { margin-right: 13px; margin-left: 13px; }
 	.srt-footer { padding-right: 13px; padding-left: 13px; }
-	.eyewear-content { grid-template-columns: minmax(125px, .8fr) minmax(170px, 1.2fr); padding-right: 14px; padding-left: 14px; gap: 12px; }
-	.eyewear-product-rail { padding-right: 12px; padding-left: 12px; gap: 7px; }
 }
 @media (max-width: 520px) {
 	.project-artwork--demo { height: 590px; padding: 8px; }
@@ -305,17 +252,6 @@
 	.srt-footer .demo-primary-button { min-height: 29px; padding: 0 8px; font-size: 8px !important; }
 	.found-live-toolbar { min-height: 28px; flex-basis: 28px; padding: 0 7px; }
 	.found-live-toolbar > span, .found-live-toolbar > a { font-size: 7px; }
-	.eyewear-topbar { height: 38px; flex-basis: 38px; padding: 0 11px; }
-	.eyewear-wordmark { font-size: 15px !important; }
-	.eyewear-topbar nav { gap: 8px; }
-	.eyewear-topbar nav span, .eyewear-bag { font-size: 7px !important; }
-	.eyewear-content { min-height: 0; padding: 12px 11px 9px; grid-template-columns: minmax(105px, .85fr) minmax(125px, 1.15fr); gap: 8px; }
-	.eyewear-product-copy h2 { font-size: 24px; }
-	.eyewear-product-copy > p { font-size: 9px; }
-	.eyewear-price { margin: 10px 0; font-size: 12px; }
-	.eyewear-glasses > span { border-width: 5px; }
-	.eyewear-product-rail { min-height: 47px; padding: 5px 8px; gap: 4px; }
-	.eyewear-product-rail > span { font-size: 6px; }
-	.eyewear-product-rail > button { height: 30px; padding: 3px 5px; gap: 4px; font-size: 8px; }
-	.eyewear-product-rail > button > span { font-size: 7px; }
+	.eyewear-live-toolbar { min-height: 28px; flex-basis: 28px; padding: 0 7px; }
+	.eyewear-live-toolbar > span, .eyewear-live-toolbar > a { font-size: 7px; }
 }
